@@ -14,18 +14,19 @@ namespace zfinViewer.Models
         SqlConnection conn = new SqlConnection(Variables.npdConnectionString);
         public DateTime StartDate;
         public DateTime FinishDate;
-        public string MissingData = "Nie znaleziono BOMu lub UoM dla poniższych produktów:" + Environment.NewLine;
-        public bool IsMissing = false;
+        public string MissingData;
+        public bool IsMissing;
 
         public Orders()
         {
             Items = new List<Order>();
         }
 
-        public void Reload(DateTime dFrom, DateTime dTo, int materiaTypeId)
+        public async Task Reload(DateTime dFrom, DateTime dTo, int materiaTypeId)
         {
             Items.Clear();
-
+            MissingData = "Nie znaleziono BOMu lub UoM dla poniższych produktów:" + Environment.NewLine;
+            IsMissing = false;
             StartDate = dFrom;
             FinishDate = dTo;
 
@@ -63,10 +64,10 @@ namespace zfinViewer.Models
                 }
             }
 
-            GetProductUsage(materiaTypeId);
+            await GetProductUsage(materiaTypeId);
         }
 
-        public void GetProductUsage(int materialTypeId)
+        public async Task GetProductUsage(int materialTypeId)
         {
             string str = "";
             foreach(Order o in Items)
@@ -136,7 +137,7 @@ namespace zfinViewer.Models
             }
         }
 
-        public DataTable GetDataTable(MassBalanceType reportType)
+        public async Task<DataTable> GetDataTable(MassBalanceType reportType)
         {
             DataTable dt = new DataTable("MassBalance");
             DataColumn nCol;
@@ -179,19 +180,23 @@ namespace zfinViewer.Models
 
             nCol = new DataColumn("ZeroConsumpton");
             nCol.DataType = Type.GetType("System.Double");
-            nCol.Caption = "Zerowe zużycie";
+            nCol.Caption = "Zerowe zużycie [PC]";
             dt.Columns.Add(nCol);
             nCol = new DataColumn("ActConsumption");
             nCol.DataType = Type.GetType("System.Double");
-            nCol.Caption = "Rzeczywiste zużycie";
+            nCol.Caption = "Rzeczywiste zużycie [PC]";
             dt.Columns.Add(nCol);
             nCol = new DataColumn("ActScrap");
             nCol.DataType = Type.GetType("System.Double");
-            nCol.Caption = "Rzeczywista strata";
+            nCol.Caption = "Rzeczywista strata [%]";
             dt.Columns.Add(nCol);
             nCol = new DataColumn("TargetScrap");
             nCol.DataType = Type.GetType("System.Double");
-            nCol.Caption = "Założona strata";
+            nCol.Caption = "Założona strata [%]";
+            dt.Columns.Add(nCol);
+            nCol = new DataColumn("Difference");
+            nCol.DataType = Type.GetType("System.Double");
+            nCol.Caption = "Strata vs BOM [%]";
             dt.Columns.Add(nCol);
 
 
@@ -229,7 +234,7 @@ namespace zfinViewer.Models
                             if (pu.Component.CategoryId == 4)
                             {
                                 //box
-                                divider = pu.Component.boxCount;
+                                divider = pu.Product.boxCount;
                                 if(pu.Component.Name.Substring(0,2)=="LD" || pu.Component.Name.Substring(0, 2) == "TR")
                                 {
                                     multiplier++;
@@ -270,11 +275,12 @@ namespace zfinViewer.Models
                         nRow["ZPKG"] = compInd;
                         nRow["ZPKGName"] = compName;
                         nRow["ActConsumption"] =  actCons;
-                        nRow["TargetScrap"] = tScrap;
+                        nRow["TargetScrap"] = -1*tScrap;
                         nRow["ZeroConsumpton"] = (o.ProdSap / divider)*multiplier;
                         nRow["ActScrap"] = (100*(((o.ProdSap/divider)*multiplier) - actCons) / actCons);
                         nRow["ZFIN"] = zfin;
                         nRow["ZFINName"] = zfinName;
+                        nRow["Difference"] = (100 * (((o.ProdSap / divider) * multiplier) - actCons) / actCons) + tScrap;
                         dt.Rows.Add(nRow);
                     }
                 }

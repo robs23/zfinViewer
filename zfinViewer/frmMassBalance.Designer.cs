@@ -46,6 +46,10 @@
             this.label4 = new System.Windows.Forms.Label();
             this.cmbCategory = new System.Windows.Forms.ComboBox();
             this.tooltip = new System.Windows.Forms.ToolTip(this.components);
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.txtTotalLoss = new System.Windows.Forms.TextBox();
+            this.txtBomLoss = new System.Windows.Forms.TextBox();
             this.tlpMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvData)).BeginInit();
             this.status.SuspendLayout();
@@ -68,7 +72,7 @@
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tlpMain.Size = new System.Drawing.Size(622, 505);
+            this.tlpMain.Size = new System.Drawing.Size(843, 505);
             this.tlpMain.TabIndex = 0;
             // 
             // dgvData
@@ -91,7 +95,7 @@
             this.dgvData.Location = new System.Drawing.Point(3, 63);
             this.dgvData.Name = "dgvData";
             this.dgvData.ReadOnly = true;
-            this.dgvData.Size = new System.Drawing.Size(616, 419);
+            this.dgvData.Size = new System.Drawing.Size(837, 419);
             this.dgvData.TabIndex = 0;
             this.dgvData.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvData_CellDoubleClick);
             // 
@@ -101,7 +105,7 @@
             this.lblStatus});
             this.status.Location = new System.Drawing.Point(0, 485);
             this.status.Name = "status";
-            this.status.Size = new System.Drawing.Size(622, 20);
+            this.status.Size = new System.Drawing.Size(843, 20);
             this.status.TabIndex = 1;
             this.status.Text = "statusStrip1";
             // 
@@ -116,14 +120,16 @@
             this.tlpControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tlpControl.ColumnCount = 6;
+            this.tlpControl.ColumnCount = 8;
             this.tlpControl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tlpControl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tlpControl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
             this.tlpControl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
             this.tlpControl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpControl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tlpControl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tlpControl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this.tlpControl.Controls.Add(this.tbnUpdate, 5, 1);
+            this.tlpControl.Controls.Add(this.tbnUpdate, 7, 1);
             this.tlpControl.Controls.Add(this.cmbType, 2, 1);
             this.tlpControl.Controls.Add(this.txtDfrom, 0, 1);
             this.tlpControl.Controls.Add(this.txtDto, 1, 1);
@@ -132,12 +138,16 @@
             this.tlpControl.Controls.Add(this.label3, 2, 0);
             this.tlpControl.Controls.Add(this.label4, 3, 0);
             this.tlpControl.Controls.Add(this.cmbCategory, 3, 1);
+            this.tlpControl.Controls.Add(this.label5, 5, 0);
+            this.tlpControl.Controls.Add(this.label6, 6, 0);
+            this.tlpControl.Controls.Add(this.txtTotalLoss, 5, 1);
+            this.tlpControl.Controls.Add(this.txtBomLoss, 6, 1);
             this.tlpControl.Location = new System.Drawing.Point(3, 3);
             this.tlpControl.Name = "tlpControl";
             this.tlpControl.RowCount = 2;
             this.tlpControl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tlpControl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpControl.Size = new System.Drawing.Size(616, 54);
+            this.tlpControl.Size = new System.Drawing.Size(837, 54);
             this.tlpControl.TabIndex = 3;
             // 
             // tbnUpdate
@@ -146,7 +156,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tbnUpdate.Image = ((System.Drawing.Image)(resources.GetObject("tbnUpdate.Image")));
-            this.tbnUpdate.Location = new System.Drawing.Point(569, 23);
+            this.tbnUpdate.Location = new System.Drawing.Point(790, 23);
             this.tbnUpdate.Name = "tbnUpdate";
             this.tbnUpdate.Size = new System.Drawing.Size(44, 28);
             this.tbnUpdate.TabIndex = 2;
@@ -238,11 +248,52 @@
             this.cmbCategory.Size = new System.Drawing.Size(144, 21);
             this.cmbCategory.TabIndex = 8;
             // 
+            // label5
+            // 
+            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(590, 3);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(94, 13);
+            this.label5.TabIndex = 9;
+            this.label5.Text = "Strata [%]";
+            // 
+            // label6
+            // 
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(690, 3);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(94, 13);
+            this.label6.TabIndex = 10;
+            this.label6.Text = "Strata w BOM [%]";
+            // 
+            // txtTotalLoss
+            // 
+            this.txtTotalLoss.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtTotalLoss.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.txtTotalLoss.ForeColor = System.Drawing.Color.Red;
+            this.txtTotalLoss.Location = new System.Drawing.Point(590, 25);
+            this.txtTotalLoss.Name = "txtTotalLoss";
+            this.txtTotalLoss.ReadOnly = true;
+            this.txtTotalLoss.Size = new System.Drawing.Size(94, 23);
+            this.txtTotalLoss.TabIndex = 11;
+            // 
+            // txtBomLoss
+            // 
+            this.txtBomLoss.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtBomLoss.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.txtBomLoss.Location = new System.Drawing.Point(690, 25);
+            this.txtBomLoss.Name = "txtBomLoss";
+            this.txtBomLoss.ReadOnly = true;
+            this.txtBomLoss.Size = new System.Drawing.Size(94, 23);
+            this.txtBomLoss.TabIndex = 12;
+            // 
             // frmMassBalance
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(622, 505);
+            this.ClientSize = new System.Drawing.Size(843, 505);
             this.Controls.Add(this.tlpMain);
             this.Name = "frmMassBalance";
             this.Text = "Bilans mas";
@@ -275,5 +326,9 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox cmbCategory;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox txtTotalLoss;
+        private System.Windows.Forms.TextBox txtBomLoss;
     }
 }
