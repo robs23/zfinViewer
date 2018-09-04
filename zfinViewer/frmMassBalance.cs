@@ -14,15 +14,18 @@ namespace zfinViewer
         Orders Orders;
         SqlConnection conn = new SqlConnection(Variables.npdConnectionString);
         frmLooper Looper;
+        Filter Filter;
 
         public frmMassBalance()
         {
             InitializeComponent();
             Orders = new Orders();
+            Filter = new Filter();
         }
 
         private void frmMassBalance_Load(object sender, EventArgs e)
         {
+            btnFilter.Enabled = false;
             Looper = new frmLooper(this);
             GetMaterialTypes();
         }
@@ -43,6 +46,7 @@ namespace zfinViewer
                 col.HeaderText = dt.Columns[col.HeaderText].Caption;
             }
             dgvData.Columns[2].Width = 250;
+            if(Orders.Items.Count > 0) { btnFilter.Enabled = true; }
             lblStatus.Text = "Liczba pozycji: " + Orders.Items.Count.ToString();
             double totLoss = 0;
             double bomLoss = 0;
@@ -168,6 +172,13 @@ namespace zfinViewer
             cmbCategory.DataSource = dtMaterialTypes;
             cmbCategory.ValueMember = "materialTypeId";
             cmbCategory.DisplayMember = "materialTypeName";
+        }
+
+        private void btnFilter_Click(object sender, EventArgs e)
+        {
+            Filter.Init((DataTable)dgvData.DataSource);
+            frmFilter FrmFilter = new frmFilter(this, Filter);
+            FrmFilter.Show(this);
         }
     }
 }

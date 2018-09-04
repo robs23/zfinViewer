@@ -117,11 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="icon_filter_off" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Img\icon_filter_off.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="btnRemove.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAFzUkdCAK7O
+        HOkAAAAEZ0FNQQAAsY8L/GEFAAAACXBIWXMAAAsRAAALEQF/ZF+RAAAAqklEQVQ4T6XSTQ4BQRDF8V7i
+        MCLOirBwFpE5BOEkbPi/IpNunkzhJb9Nf810dRWTOTY44/p0whozfMwEW9wG6PAxmmhzB7fB2aM5JPPl
+        V7pSRHd2CzKiJrqTm8xYIartJjOOiGeqB4dSr71o4O8D1CT14DcOiOdwkxkLxFO4yYwpIr885RJ91JZq
+        T7fQ2WGEJjok8yf68tvmOqqJOkxNomcSVVsF6+/8SCl3mai4QveX8LoAAAAASUVORK5CYII=
+</value>
   </data>
-  <data name="icon_filter_on" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Img\icon_filter_on.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="btnClear.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAFzUkdCAK7O
+        HOkAAAAEZ0FNQQAAsY8L/GEFAAAACXBIWXMAAAsRAAALEQF/ZF+RAAABCklEQVQ4T4WSSUoFQRBEe6cu
+        xJM47hzApQvxcuKEeBbFvxBP4HQMdaELh/eKH5Kt3d+AB0VkZFZVV3cDWoczeIL3KY9wCmswqgW4gK8Z
+        fMI5mO1JYwJDTUNcQ29I3fkG9uC5eK71rMXzmk0bENPAIqhNsFFcK2sZ4nVWoU3KgAONIhvTHJlJ/ljD
+        rx3jFXZhTNbMJP8A7ZlizBryu1ns/TOg3rlqC+qHlTdox4jxAgbHtA1mkr+D7qQY+xpFO1OqzCR/qOFT
+        +CQat7AEykZ3kwyxZsbsByxDU31KA+5Sj+paL81yBD+ahytI8T8uYQ56cognyXWGsObPY3ZUfhND9+Az
+        iWuPvAJFXfcN6BGMBHSQhv4AAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="btnOK.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAFzUkdCAK7O
+        HOkAAAAEZ0FNQQAAsY8L/GEFAAAACXBIWXMAAAsRAAALEQF/ZF+RAAAAmUlEQVQ4T9WNOw7CQAxE9yRh
+        v2UqOAKg3IGO89JwErqQhs+YjNEqQsLbwZOslT1+Xvd/xBi7EELPtg3Im5TSBXXDkQPHNir5wTox+s5S
+        xu9TznnPeAbB2nu/Yvvmk4x3YDyD4RHDuyyKwLFNFjA86xLqdcQsCwi3CEddRolokxUs7bBUH7HLyvJI
+        k6xUR67NslJKiVJsfxrnnj2vU8I1TX/OAAAAAElFTkSuQmCC
+</value>
   </data>
 </root>

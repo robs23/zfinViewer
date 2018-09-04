@@ -7,26 +7,60 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using zfinViewer.Models;
 
 namespace zfinViewer
 {
     public partial class frmFilter : Form
     {
-        public frmFilter()
+        Filter Filter;
+
+        public frmFilter(Form parent, Filter f)
         {
             InitializeComponent();
+            Filter = f;
         }
 
         private void frmFilter_Load(object sender, EventArgs e)
         {
-            List<string> Types = new List<string>();
-            Types.Add("Ogranicz do");
-            Types.Add("Wyklucz");
-            cmbType.DataSource = Types;
+            DataTable Dt = new DataTable();
+            DataColumn col = new DataColumn("Kolumna");
+            Dt.Columns.Add(col);
+            col = new DataColumn("Typ");
+            Dt.Columns.Add(col);
+            col = new DataColumn("Wartości");
+            Dt.Columns.Add(col);
+            Dt.Columns[0].ReadOnly = true;
+            Dt.Columns[2].ReadOnly = true;
 
-            List<string> Columns = new List<string>();
-            Columns.Add("Zlecenie");
-            cmbColumn.DataSource = Columns;
+
+            foreach (FilterColumn c in Filter.Columns)
+            {
+                DataRow row = Dt.NewRow();
+                row["Kolumna"] = c.Name;
+                Dt.Rows.Add(row);
+            }
+            dgvData.DataSource = Dt;
+
+            List<string> Types = new List<string>();
+            Types.Add("ogranicz do");
+            Types.Add("wyklucz");
+            
+            foreach(DataGridViewRow r in dgvData.Rows)
+            {
+                r.Cells[1] = new DataGridViewComboBoxCell();
+                ((DataGridViewComboBoxCell)r.Cells[1]).DataSource = Types;
+            }
+
+        }
+
+        private void dgvData_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == 2)
+            {
+                frmFilterColumn FrmFilterColumn = new frmFilterColumn(this, Filter.Columns[e.RowIndex]);
+                FrmFilterColumn.Show(this);
+            }
         }
     }
 }

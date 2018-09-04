@@ -29,14 +29,13 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMassBalance));
             this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
             this.dgvData = new System.Windows.Forms.DataGridView();
             this.status = new System.Windows.Forms.StatusStrip();
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.tlpControl = new System.Windows.Forms.TableLayoutPanel();
-            this.tbnUpdate = new System.Windows.Forms.Button();
             this.cmbType = new System.Windows.Forms.ComboBox();
             this.txtDfrom = new System.Windows.Forms.DateTimePicker();
             this.txtDto = new System.Windows.Forms.DateTimePicker();
@@ -45,11 +44,13 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.cmbCategory = new System.Windows.Forms.ComboBox();
-            this.tooltip = new System.Windows.Forms.ToolTip(this.components);
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.txtTotalLoss = new System.Windows.Forms.TextBox();
             this.txtBomLoss = new System.Windows.Forms.TextBox();
+            this.tooltip = new System.Windows.Forms.ToolTip(this.components);
+            this.btnFilter = new System.Windows.Forms.Button();
+            this.tbnUpdate = new System.Windows.Forms.Button();
             this.tlpMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvData)).BeginInit();
             this.status.SuspendLayout();
@@ -84,14 +85,14 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvData.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dgvData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvData.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvData.DefaultCellStyle = dataGridViewCellStyle4;
             this.dgvData.Location = new System.Drawing.Point(3, 63);
             this.dgvData.Name = "dgvData";
             this.dgvData.ReadOnly = true;
@@ -120,16 +121,17 @@
             this.tlpControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tlpControl.ColumnCount = 8;
+            this.tlpControl.ColumnCount = 9;
             this.tlpControl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tlpControl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tlpControl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
             this.tlpControl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
+            this.tlpControl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tlpControl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpControl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tlpControl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tlpControl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this.tlpControl.Controls.Add(this.tbnUpdate, 7, 1);
+            this.tlpControl.Controls.Add(this.tbnUpdate, 8, 1);
             this.tlpControl.Controls.Add(this.cmbType, 2, 1);
             this.tlpControl.Controls.Add(this.txtDfrom, 0, 1);
             this.tlpControl.Controls.Add(this.txtDto, 1, 1);
@@ -138,10 +140,11 @@
             this.tlpControl.Controls.Add(this.label3, 2, 0);
             this.tlpControl.Controls.Add(this.label4, 3, 0);
             this.tlpControl.Controls.Add(this.cmbCategory, 3, 1);
-            this.tlpControl.Controls.Add(this.label5, 5, 0);
-            this.tlpControl.Controls.Add(this.label6, 6, 0);
-            this.tlpControl.Controls.Add(this.txtTotalLoss, 5, 1);
-            this.tlpControl.Controls.Add(this.txtBomLoss, 6, 1);
+            this.tlpControl.Controls.Add(this.label5, 6, 0);
+            this.tlpControl.Controls.Add(this.label6, 7, 0);
+            this.tlpControl.Controls.Add(this.txtTotalLoss, 6, 1);
+            this.tlpControl.Controls.Add(this.txtBomLoss, 7, 1);
+            this.tlpControl.Controls.Add(this.btnFilter, 4, 1);
             this.tlpControl.Location = new System.Drawing.Point(3, 3);
             this.tlpControl.Name = "tlpControl";
             this.tlpControl.RowCount = 2;
@@ -149,20 +152,6 @@
             this.tlpControl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpControl.Size = new System.Drawing.Size(837, 54);
             this.tlpControl.TabIndex = 3;
-            // 
-            // tbnUpdate
-            // 
-            this.tbnUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbnUpdate.Image = ((System.Drawing.Image)(resources.GetObject("tbnUpdate.Image")));
-            this.tbnUpdate.Location = new System.Drawing.Point(790, 23);
-            this.tbnUpdate.Name = "tbnUpdate";
-            this.tbnUpdate.Size = new System.Drawing.Size(44, 28);
-            this.tbnUpdate.TabIndex = 2;
-            this.tooltip.SetToolTip(this.tbnUpdate, "Odśwież raport dla wybranego okresu..");
-            this.tbnUpdate.UseVisualStyleBackColor = true;
-            this.tbnUpdate.Click += new System.EventHandler(this.tbnUpdate_Click);
             // 
             // cmbType
             // 
@@ -289,6 +278,33 @@
             this.txtBomLoss.Size = new System.Drawing.Size(94, 23);
             this.txtBomLoss.TabIndex = 12;
             // 
+            // btnFilter
+            // 
+            this.btnFilter.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnFilter.Image = global::zfinViewer.Properties.Resources.icon_filter_off;
+            this.btnFilter.Location = new System.Drawing.Point(503, 23);
+            this.btnFilter.Name = "btnFilter";
+            this.btnFilter.Size = new System.Drawing.Size(44, 28);
+            this.btnFilter.TabIndex = 13;
+            this.btnFilter.UseVisualStyleBackColor = true;
+            this.btnFilter.Click += new System.EventHandler(this.btnFilter_Click);
+            // 
+            // tbnUpdate
+            // 
+            this.tbnUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbnUpdate.Image = ((System.Drawing.Image)(resources.GetObject("tbnUpdate.Image")));
+            this.tbnUpdate.Location = new System.Drawing.Point(790, 23);
+            this.tbnUpdate.Name = "tbnUpdate";
+            this.tbnUpdate.Size = new System.Drawing.Size(44, 28);
+            this.tbnUpdate.TabIndex = 2;
+            this.tooltip.SetToolTip(this.tbnUpdate, "Odśwież raport dla wybranego okresu..");
+            this.tbnUpdate.UseVisualStyleBackColor = true;
+            this.tbnUpdate.Click += new System.EventHandler(this.tbnUpdate_Click);
+            // 
             // frmMassBalance
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -330,5 +346,6 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox txtTotalLoss;
         private System.Windows.Forms.TextBox txtBomLoss;
+        private System.Windows.Forms.Button btnFilter;
     }
 }

@@ -53,6 +53,12 @@
     <Compile Include="frmFilter.Designer.cs">
       <DependentUpon>frmFilter.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmFilterColumn.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmFilterColumn.Designer.cs">
+      <DependentUpon>frmFilterColumn.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmLooper.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -73,6 +79,8 @@
     </Compile>
     <Compile Include="Models\Company.cs" />
     <Compile Include="Models\Contact.cs" />
+    <Compile Include="Models\Filter.cs" />
+    <Compile Include="Models\FilterColumn.cs" />
     <Compile Include="Models\Orders.cs" />
     <Compile Include="Models\ProductionUsage.cs" />
     <Compile Include="Static\ExtensionMethods.cs" />
@@ -130,6 +138,9 @@
     <EmbeddedResource Include="frmFilter.resx">
       <DependentUpon>frmFilter.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmFilterColumn.resx">
+      <DependentUpon>frmFilterColumn.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmLooper.resx">
       <DependentUpon>frmLooper.cs</DependentUpon>
     </EmbeddedResource>
@@ -152,14 +163,17 @@
       <DependentUpon>frmZfinSearch.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="Img\icon_filter_off.png" />
+    <None Include="Img\icon_filter_on.png" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
