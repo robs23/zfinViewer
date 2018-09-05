@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmFilterColumn));
             this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
             this.dgvValues = new System.Windows.Forms.DataGridView();
@@ -35,6 +36,8 @@
             this.btnRemove = new System.Windows.Forms.Button();
             this.btnClear = new System.Windows.Forms.Button();
             this.btnOK = new System.Windows.Forms.Button();
+            this.btnTrim = new System.Windows.Forms.Button();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.tlpMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvValues)).BeginInit();
             this.tlpButtons.SuspendLayout();
@@ -76,19 +79,20 @@
             this.tlpButtons.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tlpButtons.ColumnCount = 4;
+            this.tlpButtons.ColumnCount = 5;
+            this.tlpButtons.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tlpButtons.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tlpButtons.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tlpButtons.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpButtons.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tlpButtons.Controls.Add(this.btnRemove, 0, 0);
-            this.tlpButtons.Controls.Add(this.btnClear, 1, 0);
-            this.tlpButtons.Controls.Add(this.btnOK, 3, 0);
+            this.tlpButtons.Controls.Add(this.btnOK, 4, 0);
+            this.tlpButtons.Controls.Add(this.btnClear, 2, 0);
+            this.tlpButtons.Controls.Add(this.btnTrim, 1, 0);
             this.tlpButtons.Location = new System.Drawing.Point(3, 3);
             this.tlpButtons.Name = "tlpButtons";
             this.tlpButtons.RowCount = 1;
             this.tlpButtons.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpButtons.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tlpButtons.Size = new System.Drawing.Size(258, 34);
             this.tlpButtons.TabIndex = 1;
             // 
@@ -102,7 +106,9 @@
             this.btnRemove.Name = "btnRemove";
             this.btnRemove.Size = new System.Drawing.Size(24, 28);
             this.btnRemove.TabIndex = 0;
+            this.toolTip1.SetToolTip(this.btnRemove, "Usuń zaznaczone..");
             this.btnRemove.UseVisualStyleBackColor = true;
+            this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
             // 
             // btnClear
             // 
@@ -111,11 +117,13 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnClear.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.btnClear.Image = ((System.Drawing.Image)(resources.GetObject("btnClear.Image")));
-            this.btnClear.Location = new System.Drawing.Point(33, 3);
+            this.btnClear.Location = new System.Drawing.Point(63, 3);
             this.btnClear.Name = "btnClear";
             this.btnClear.Size = new System.Drawing.Size(24, 28);
             this.btnClear.TabIndex = 1;
+            this.toolTip1.SetToolTip(this.btnClear, "Usuń wszystko..");
             this.btnClear.UseVisualStyleBackColor = false;
+            this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
             // 
             // btnOK
             // 
@@ -128,8 +136,23 @@
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(24, 28);
             this.btnOK.TabIndex = 2;
+            this.toolTip1.SetToolTip(this.btnOK, "Zatwierdź..");
             this.btnOK.UseVisualStyleBackColor = false;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
+            // 
+            // btnTrim
+            // 
+            this.btnTrim.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnTrim.Image = ((System.Drawing.Image)(resources.GetObject("btnTrim.Image")));
+            this.btnTrim.Location = new System.Drawing.Point(33, 3);
+            this.btnTrim.Name = "btnTrim";
+            this.btnTrim.Size = new System.Drawing.Size(24, 28);
+            this.btnTrim.TabIndex = 3;
+            this.toolTip1.SetToolTip(this.btnTrim, "Zostaw zaznaczone..");
+            this.btnTrim.UseVisualStyleBackColor = true;
+            this.btnTrim.Click += new System.EventHandler(this.btnTrim_Click);
             // 
             // frmFilterColumn
             // 
@@ -157,5 +180,7 @@
         private System.Windows.Forms.Button btnRemove;
         private System.Windows.Forms.Button btnClear;
         private System.Windows.Forms.Button btnOK;
+        private System.Windows.Forms.Button btnTrim;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }

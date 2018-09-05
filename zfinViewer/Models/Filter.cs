@@ -31,7 +31,10 @@ namespace zfinViewer.Models
                     List<object> items = new List<object>();
                     foreach(DataRow row in DataTable.Rows)
                     {
-                        items.Add(row[col.Ordinal]);
+                        if (!items.Where(i => i.Equals(row[col.Ordinal])).Any())
+                        {
+                            items.Add(row[col.Ordinal]);
+                        }
                     }
                     nCol.Items = items;
                     nCol.LimitTo = new List<object>();
@@ -40,6 +43,30 @@ namespace zfinViewer.Models
                     Columns.Add(nCol);
                 }
                 IsInitialized = true;
+            }
+        }
+
+        public void Clear(List<string>Cols = null)
+        {
+            if (Cols == null)
+            {
+                //remove whole filter
+                foreach(FilterColumn col in Columns)
+                {
+                    col.Exclude.Clear();
+                    col.LimitTo.Clear();
+                }
+            }
+            else
+            {
+                foreach (FilterColumn col in Columns)
+                {
+                    if (Cols.Where(c => c.Equals(col.Name)).Any())
+                    {
+                        col.Exclude.Clear();
+                        col.LimitTo.Clear();
+                    }
+                }
             }
         }
     }

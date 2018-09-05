@@ -24,6 +24,22 @@ namespace zfinViewer
 
         private void btnOK_Click(object sender, EventArgs e)
         {
+            if (Column.FilterType == FilterType.Exclude)
+            {
+                Column.Exclude.Clear();
+                foreach(DataGridViewRow row in dgvValues.Rows)
+                {
+                    Column.Exclude.Add(row.Cells[0].Value);
+                }
+            }
+            else
+            {
+                Column.LimitTo.Clear();
+                foreach (DataGridViewRow row in dgvValues.Rows)
+                {
+                    Column.LimitTo.Add(row.Cells[0].Value);
+                }
+            }
             this.DialogResult = DialogResult.OK;
         }
 
@@ -64,6 +80,47 @@ namespace zfinViewer
             }
 
             dgvValues.DataSource = DataTable;
+        }
+
+        private void btnRemove_Click(object sender, EventArgs e)
+        {
+            if(dgvValues.SelectedRows.Count > 0)
+            {
+                foreach (DataGridViewRow row in dgvValues.SelectedRows)
+                {
+                    dgvValues.Rows.RemoveAt(row.Index);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Brak zaznaczenia..");
+            }
+        }
+
+        private void btnClear_Click(object sender, EventArgs e)
+        {
+            for (int i = dgvValues.Rows.Count-1; i >= 0; i--)
+            {
+                dgvValues.Rows.RemoveAt(i);
+            }
+        }
+
+        private void btnTrim_Click(object sender, EventArgs e)
+        {
+            if(dgvValues.SelectedRows.Count > 0)
+            {
+                for (int i = dgvValues.Rows.Count-1; i >= 0; i--)
+                {
+                    if (!dgvValues.Rows[i].Selected)
+                    {
+                        dgvValues.Rows.RemoveAt(i);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Brak zaznaczenia..");
+            }
         }
     }
 }

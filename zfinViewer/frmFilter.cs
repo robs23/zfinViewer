@@ -31,7 +31,6 @@ namespace zfinViewer
             col = new DataColumn("Wartości");
             Dt.Columns.Add(col);
             Dt.Columns[0].ReadOnly = true;
-            Dt.Columns[2].ReadOnly = true;
 
 
             foreach (FilterColumn c in Filter.Columns)
@@ -51,15 +50,113 @@ namespace zfinViewer
                 r.Cells[1] = new DataGridViewComboBoxCell();
                 ((DataGridViewComboBoxCell)r.Cells[1]).DataSource = Types;
             }
-
+            dgvData.Columns[2].ReadOnly = true;
+            UpdateFilterInfo();
         }
 
         private void dgvData_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.ColumnIndex == 2)
             {
-                frmFilterColumn FrmFilterColumn = new frmFilterColumn(this, Filter.Columns[e.RowIndex]);
-                FrmFilterColumn.Show(this);
+                if(dgvData[1, e.RowIndex].Value.ToString().Length == 0)
+                {
+                    MessageBox.Show("Najpierw wybierz typ z listy rozwijanej!");
+                }
+                else
+                {
+                    if(dgvData[1, e.RowIndex].Value.ToString() == "wyklucz")
+                    {
+                        Filter.Columns[e.RowIndex].FilterType = FilterType.Exclude;
+                    }
+                    else
+                    {
+                        Filter.Columns[e.RowIndex].FilterType = FilterType.LimitTo;
+                    }
+                    
+                    frmFilterColumn FrmFilterColumn = new frmFilterColumn(this, Filter.Columns[e.RowIndex]);
+                    var res = FrmFilterColumn.ShowDialog();
+                    if(res == DialogResult.OK)
+                    {
+                        dgvData.Columns[2].ReadOnly = false;
+                        if (Filter.Columns[e.RowIndex].LimitTo.Count > 0)
+                        {
+                            if(Filter.Columns[e.RowIndex].LimitTo.Count > 0)
+                            {
+                                dgvData[2, e.RowIndex].Value = Filter.Columns[e.RowIndex].LimitTo.Count + " pozycji";
+                                dgvData.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.AliceBlue;
+                            }
+                            else
+                            {
+                                dgvData[2, e.RowIndex].Value = null;
+                                dgvData.Rows[e.RowIndex].DefaultCellStyle.BackColor = dgvData.DefaultCellStyle.BackColor;
+                            }
+                            
+                        }
+                        else if(Filter.Columns[e.RowIndex].Exclude.Count > 0)
+                        {
+                            if (Filter.Columns[e.RowIndex].Exclude.Count > 0)
+                            {
+                                dgvData[2, e.RowIndex].Value = Filter.Columns[e.RowIndex].Exclude.Count + " pozycji";
+                                dgvData.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.AliceBlue;
+                            }
+                            else
+                            {
+                                dgvData[2, e.RowIndex].Value = null;
+                                dgvData.Rows[e.RowIndex].DefaultCellStyle.BackColor = dgvData.DefaultCellStyle.BackColor;
+                            }
+                            
+                        }
+
+                        dgvData[1, e.RowIndex].ReadOnly = true;
+                        dgvData.Columns[2].ReadOnly = true;
+                    }
+                }
+            }
+        }
+
+        private void btnRemove_Click(object sender, EventArgs e)
+        {
+            if(dgvData.SelectedRows.Count > 0)
+            {
+                List<string> Cols = new List<string>();
+                foreach(DataGridViewRow row in dgvData.SelectedRows)
+                {
+                    Cols.Add(row.Cells[0].Value.ToString());
+                }
+                Filter.Clear(Cols);
+            }
+            else
+            {
+                Filter.Clear();
+            }
+            UpdateFilterInfo();
+        }
+
+        private void UpdateFilterInfo()
+        {
+            foreach (FilterColumn c in Filter.Columns)
+            {
+                if(c.Exclude.Count == 0 & c.LimitTo.Count == 0)
+                {
+                    dgvData[2, c.ID].Value = null;
+                    dgvData.Rows[c.ID].DefaultCellStyle.BackColor = dgvData.DefaultCellStyle.BackColor;
+                    dgvData.Rows[c.ID].Cells[1].ReadOnly = false;
+                }
+                else
+                {
+                    if(c.Exclude.Count > 0)
+                    {
+                        dgvData[1, c.ID].Value = "wyklucz";
+                        dgvData[2, c.ID].Value = c.Exclude.Count + " pozycji";
+                    }
+                    else
+                    {
+                        dgvData[1, c.ID].Value = "ogranicz do";
+                        dgvData[2, c.ID].Value = c.LimitTo.Count + " pozycji";
+                    }
+                    
+                    dgvData.Rows[c.ID].DefaultCellStyle.BackColor = Color.AliceBlue;
+                }
             }
         }
     }

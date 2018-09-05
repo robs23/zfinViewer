@@ -12,6 +12,7 @@ namespace zfinViewer.Models
         public int ID { get; set; }
         public string Name { get; set; }
         public Type Type { get; set; }
+        public FilterType FilterType { get; set; }
         public List<object> Items { get; set; }
         public List<object> LimitTo { get; set; }
         public List<object> Exclude { get; set; }
@@ -22,5 +23,11 @@ namespace zfinViewer.Models
         }
 
 
+    }
+
+    public enum FilterType
+    {
+        LimitTo,
+        Exclude
     }
 }
