@@ -29,13 +29,14 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMassBalance));
             this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
             this.dgvData = new System.Windows.Forms.DataGridView();
             this.status = new System.Windows.Forms.StatusStrip();
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.tlpControl = new System.Windows.Forms.TableLayoutPanel();
+            this.tbnUpdate = new System.Windows.Forms.Button();
             this.cmbType = new System.Windows.Forms.ComboBox();
             this.txtDfrom = new System.Windows.Forms.DateTimePicker();
             this.txtDto = new System.Windows.Forms.DateTimePicker();
@@ -48,9 +49,8 @@
             this.label6 = new System.Windows.Forms.Label();
             this.txtTotalLoss = new System.Windows.Forms.TextBox();
             this.txtBomLoss = new System.Windows.Forms.TextBox();
-            this.tooltip = new System.Windows.Forms.ToolTip(this.components);
             this.btnFilter = new System.Windows.Forms.Button();
-            this.tbnUpdate = new System.Windows.Forms.Button();
+            this.tooltip = new System.Windows.Forms.ToolTip(this.components);
             this.tlpMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvData)).BeginInit();
             this.status.SuspendLayout();
@@ -85,20 +85,21 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvData.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dgvData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvData.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvData.DefaultCellStyle = dataGridViewCellStyle1;
             this.dgvData.Location = new System.Drawing.Point(3, 63);
             this.dgvData.Name = "dgvData";
             this.dgvData.ReadOnly = true;
             this.dgvData.Size = new System.Drawing.Size(837, 419);
             this.dgvData.TabIndex = 0;
             this.dgvData.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvData_CellDoubleClick);
+            this.dgvData.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dgvData_MouseClick);
             // 
             // status
             // 
@@ -152,6 +153,20 @@
             this.tlpControl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpControl.Size = new System.Drawing.Size(837, 54);
             this.tlpControl.TabIndex = 3;
+            // 
+            // tbnUpdate
+            // 
+            this.tbnUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbnUpdate.Image = ((System.Drawing.Image)(resources.GetObject("tbnUpdate.Image")));
+            this.tbnUpdate.Location = new System.Drawing.Point(790, 23);
+            this.tbnUpdate.Name = "tbnUpdate";
+            this.tbnUpdate.Size = new System.Drawing.Size(44, 28);
+            this.tbnUpdate.TabIndex = 2;
+            this.tooltip.SetToolTip(this.tbnUpdate, "Odśwież raport dla wybranego okresu..");
+            this.tbnUpdate.UseVisualStyleBackColor = true;
+            this.tbnUpdate.Click += new System.EventHandler(this.tbnUpdate_Click);
             // 
             // cmbType
             // 
@@ -290,20 +305,6 @@
             this.btnFilter.TabIndex = 13;
             this.btnFilter.UseVisualStyleBackColor = true;
             this.btnFilter.Click += new System.EventHandler(this.btnFilter_Click);
-            // 
-            // tbnUpdate
-            // 
-            this.tbnUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbnUpdate.Image = ((System.Drawing.Image)(resources.GetObject("tbnUpdate.Image")));
-            this.tbnUpdate.Location = new System.Drawing.Point(790, 23);
-            this.tbnUpdate.Name = "tbnUpdate";
-            this.tbnUpdate.Size = new System.Drawing.Size(44, 28);
-            this.tbnUpdate.TabIndex = 2;
-            this.tooltip.SetToolTip(this.tbnUpdate, "Odśwież raport dla wybranego okresu..");
-            this.tbnUpdate.UseVisualStyleBackColor = true;
-            this.tbnUpdate.Click += new System.EventHandler(this.tbnUpdate_Click);
             // 
             // frmMassBalance
             // 

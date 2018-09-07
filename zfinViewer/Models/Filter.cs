@@ -10,7 +10,21 @@ namespace zfinViewer.Models
     public class Filter
     {
         public List<FilterColumn> Columns { get; set; }
-        public bool IsOn { get; set; }
+        public bool IsOn { get
+            {
+                if (Columns.Any())
+                {
+                    foreach(FilterColumn col in Columns)
+                    {
+                        if(col.Exclude.Any() || col.LimitTo.Any())
+                        {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
+        }
         public DataTable DataTable { get; set; }
         public DataTable FilteredTable { get; set; }
         public bool IsInitialized { get; set; }
@@ -45,6 +59,28 @@ namespace zfinViewer.Models
                 IsInitialized = true;
             }
         }
+
+        public void Apply()
+        {
+
+            foreach (FilterColumn col in Columns)
+            {
+                if (col.LimitTo.Any())
+                {
+                    var result = from DataRow row in DataTable.Rows
+                                 where col.LimitTo.Contains(row[col.ID])
+                                 select row;
+                    FilteredTable = result.CopyToDataTable<DataRow>();
+                }else if (col.Exclude.Any())
+                {
+                    var result = from DataRow row in DataTable.Rows
+                                 where !col.Exclude.Contains(row[col.ID])
+                                 select row;
+                    FilteredTable = result.CopyToDataTable<DataRow>();
+                }
+            }
+        }
+
 
         public void Clear(List<string>Cols = null)
         {

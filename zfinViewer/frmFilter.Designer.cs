@@ -135,6 +135,7 @@
             this.Controls.Add(this.tlpOutter);
             this.Name = "frmFilter";
             this.Text = "Filtr";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmFilter_FormClosed);
             this.Load += new System.EventHandler(this.frmFilter_Load);
             this.tlpOutter.ResumeLayout(false);
             this.tlpMain.ResumeLayout(false);

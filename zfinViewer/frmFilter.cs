@@ -124,12 +124,14 @@ namespace zfinViewer
                     Cols.Add(row.Cells[0].Value.ToString());
                 }
                 Filter.Clear(Cols);
+                UpdateFilterInfo();
             }
             else
             {
                 Filter.Clear();
+                this.Close();
             }
-            UpdateFilterInfo();
+            
         }
 
         private void UpdateFilterInfo()
@@ -158,6 +160,11 @@ namespace zfinViewer
                     dgvData.Rows[c.ID].DefaultCellStyle.BackColor = Color.AliceBlue;
                 }
             }
+        }
+
+        private void frmFilter_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.DialogResult = DialogResult.OK;
         }
     }
 }

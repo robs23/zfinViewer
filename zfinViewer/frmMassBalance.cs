@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
+using System.Drawing;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -15,12 +17,13 @@ namespace zfinViewer
         SqlConnection conn = new SqlConnection(Variables.npdConnectionString);
         frmLooper Looper;
         Filter Filter;
+        DataGridViewColumn SortColumn;
+        System.Windows.Forms.SortOrder SortOrder;
 
         public frmMassBalance()
         {
             InitializeComponent();
             Orders = new Orders();
-            Filter = new Filter();
         }
 
         private void frmMassBalance_Load(object sender, EventArgs e)
@@ -41,12 +44,26 @@ namespace zfinViewer
             //await Task.Run( async () => { await UpdateTable(SelectedValue, SelectedType); });
             DataTable dt = await UpdateTable(SelectedValue, SelectedType, dFrom, dTo);
             dgvData.DataSource = dt;
+            FillTable();
+            Filter = new Filter();
+            btnFilter.Image = zfinViewer.Properties.Resources.icon_filter_off;
+            Looper.Hide();
+
+            if (Orders.IsMissing)
+            {
+                MessageBox.Show(Orders.MissingData);
+            }
+        }
+
+        private void FillTable()
+        {
+            DataTable dt = (DataTable)dgvData.DataSource;
             foreach (DataGridViewColumn col in dgvData.Columns)
             {
                 col.HeaderText = dt.Columns[col.HeaderText].Caption;
             }
             dgvData.Columns[2].Width = 250;
-            if(Orders.Items.Count > 0) { btnFilter.Enabled = true; }
+            if (Orders.Items.Count > 0) { btnFilter.Enabled = true; }
             lblStatus.Text = "Liczba pozycji: " + Orders.Items.Count.ToString();
             double totLoss = 0;
             double bomLoss = 0;
@@ -68,19 +85,8 @@ namespace zfinViewer
             }
             txtTotalLoss.Text = String.Format("{0:0.00}", (totLoss / iTot));
             txtBomLoss.Text = String.Format("{0:0.00}", (-1 * bomLoss / iBom));
-            Looper.Hide();
-
-            if (Orders.IsMissing)
-            {
-                MessageBox.Show(Orders.MissingData);
-            }
         }
-
-        //private async Task<DataTable> UpdateTableAsync(int SelectedValue, int SelectedType)
-        //{
-
-        //}
-
+        
         private async Task<DataTable> UpdateTable(int SelectedValue, int SelectedType, DateTime dFrom, DateTime dTo)
         {
             DataTable dt =
@@ -176,9 +182,119 @@ namespace zfinViewer
 
         private void btnFilter_Click(object sender, EventArgs e)
         {
-            Filter.Init((DataTable)dgvData.DataSource);
+            if (!Filter.IsInitialized)
+            {
+                Filter.Init((DataTable)dgvData.DataSource);
+            }
             frmFilter FrmFilter = new frmFilter(this, Filter);
-            FrmFilter.Show(this);
+            DialogResult result = FrmFilter.ShowDialog(this);
+            if(result == DialogResult.OK)
+            {
+                if (Filter.IsOn)
+                {
+                    btnFilter.Image = zfinViewer.Properties.Resources.icon_filter_on;
+                    Filter.Apply();
+                    SaveSort();
+
+                    dgvData.DataSource = null;
+                    dgvData.DataSource = Filter.FilteredTable;
+                    FillTable();
+                    RestoreSort();
+                }
+                else
+                {
+                    btnFilter.Image = zfinViewer.Properties.Resources.icon_filter_off;
+                    SaveSort();
+
+                    dgvData.DataSource = null;
+                    dgvData.DataSource = Filter.DataTable;
+                    FillTable();
+                    RestoreSort();
+
+                }
+            }
+        }
+
+
+        private void dgvData_MouseClick(object sender, MouseEventArgs e)
+        {
+            if(e.Button == MouseButtons.Right)
+            {
+                if(dgvData.SelectedRows.Count > 0)
+                {
+                    ContextMenu m = new ContextMenu();
+                    m.MenuItems.Add(new MenuItem("Ogranicz do zaznaczonych..", new EventHandler(LimitToRows)));
+                    m.MenuItems.Add(new MenuItem("Wyklucz zaznaczone..", new EventHandler(ExcludeRows)));
+                    m.Show(dgvData, new Point(e.X, e.Y));
+                }
+            }
+        }
+
+
+        private void SaveSort()
+        {
+            if (dgvData.SortedColumn != null)
+            {
+                SortColumn = dgvData.SortedColumn;
+                SortOrder = dgvData.SortOrder;
+            }
+        }
+
+        private void RestoreSort()
+        {
+            if (SortColumn != null)
+            {
+                if (SortOrder == System.Windows.Forms.SortOrder.Ascending)
+                {
+                    dgvData.Sort(dgvData.Columns[SortColumn.Name], ListSortDirection.Ascending);
+                }
+                else
+                {
+                    dgvData.Sort(dgvData.Columns[SortColumn.Name], ListSortDirection.Descending);
+                }
+            }
+            
+        }
+
+        private void ExcludeRows(object sender, EventArgs e)
+        {
+            if (!Filter.IsInitialized)
+            {
+                Filter.Init((DataTable)dgvData.DataSource);
+            }
+            foreach (DataGridViewRow row in dgvData.SelectedRows)
+            {
+                Filter.Columns[0].Exclude.Add(row.Cells[0].Value);
+            }
+            Filter.Apply();
+            SaveSort();
+
+            dgvData.DataSource = null;
+            dgvData.DataSource = Filter.FilteredTable;
+            FillTable();
+            RestoreSort();
+            btnFilter.Image = zfinViewer.Properties.Resources.icon_filter_on;
+        }
+
+        private void LimitToRows(object sender, EventArgs e)
+        {
+            if (!Filter.IsInitialized)
+            {
+                Filter.Init((DataTable)dgvData.DataSource);
+            }
+            foreach (DataGridViewRow row in dgvData.SelectedRows)
+            {
+                Filter.Columns[0].LimitTo.Add(row.Cells[0].Value);
+            }
+            Filter.Apply();
+            SaveSort();
+            
+            dgvData.DataSource = null;
+            dgvData.DataSource = Filter.FilteredTable;
+            FillTable();
+            RestoreSort();
+            btnFilter.Image = zfinViewer.Properties.Resources.icon_filter_on;
+
         }
     }
 }
