@@ -177,5 +177,11 @@ namespace zfinViewer
             frmMassBalance FrmMassBalance = new frmMassBalance();
             FrmMassBalance.Show();
         }
+
+        private void ograniczeniaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmScheduleRestrictions FrmScheduleRestrictions = new frmScheduleRestrictions();
+            FrmScheduleRestrictions.Show();
+        }
     }
 }

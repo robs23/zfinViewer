@@ -77,6 +77,18 @@
     <Compile Include="frmOptionPicker.Designer.cs">
       <DependentUpon>frmOptionPicker.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmScheduleRestrictionDetaills.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmScheduleRestrictionDetaills.Designer.cs">
+      <DependentUpon>frmScheduleRestrictionDetaills.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmScheduleRestrictions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmScheduleRestrictions.Designer.cs">
+      <DependentUpon>frmScheduleRestrictions.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Company.cs" />
     <Compile Include="Models\Contact.cs" />
     <Compile Include="Models\Filter.cs" />
@@ -155,6 +167,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmProductOverview.resx">
       <DependentUpon>frmProductOverview.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmScheduleRestrictionDetaills.resx">
+      <DependentUpon>frmScheduleRestrictionDetaills.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmScheduleRestrictions.resx">
+      <DependentUpon>frmScheduleRestrictions.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmToast.resx">
       <DependentUpon>frmToast.cs</DependentUpon>
