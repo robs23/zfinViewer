@@ -19,7 +19,8 @@ namespace zfinViewer
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-
+            frmScheduleRestrictionDetaills FrmScheduleRestrictionDetails = new frmScheduleRestrictionDetaills(this);
+            FrmScheduleRestrictionDetails.Show(this);
         }
     }
 }
