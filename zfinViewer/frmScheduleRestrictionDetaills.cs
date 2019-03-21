@@ -33,6 +33,7 @@ namespace zfinViewer
             this.Location = new Point(this.Owner.Location.X + 20, this.Owner.Location.Y + 20);
             txtStartDate.Value = DateTime.Now;
             LoadLines();
+            cmbType.DataSource = Enum.GetValues(typeof(MesOrderType));
         }
 
         private void LoadLines()
@@ -51,7 +52,9 @@ namespace zfinViewer
                     {
                         Machine m = new Machine
                         {
-                            Name = reader[0].ToString()
+                            Name = reader[0].ToString(),
+                            Number = Convert.ToInt32(reader[1].ToString()),
+                            Type = reader[2].ToString()
                         };
                     Machines.Add(m);
                     }
@@ -113,10 +116,10 @@ namespace zfinViewer
 
         private void ChangePrefix()
         {
-            if (!string.IsNullOrEmpty(txtPrefix.Text))
+            if (!string.IsNullOrEmpty(txtSuffix.Text))
             {
                 int week = Utility.GetIsoWeekNumber(txtStartDate.Value);
-                lblExample.Text = $"T{week}{txtStartDate.Value.Year}+Numer maszyny+{txtPrefix.Text}";
+                lblExample.Text = $"T{week}{txtStartDate.Value.Year}+Numer maszyny+{txtSuffix.Text}";
             }
         }
 
@@ -183,23 +186,59 @@ namespace zfinViewer
                 if(result == DialogResult.Yes)
                 {
                     //Dodajemy
-                    MesOrders MesOrders = new MesOrders();
-                    if (MesOrders.OrderExists(txtPrefix.Text))
-                    {
-                        MessageBox.Show("Zlecenie istnieje!");
-                    }
-                    else
-                    {
-                        MessageBox.Show("Zlecenie NIE istnieje!");
-                    }
+                    AddOrders(Machines);
                 }
             }
             
         }
 
-        private void AddOrders()
+        private string CreatePrefix()
         {
+            int week = Utility.GetIsoWeekNumber(txtStartDate.Value);
+            string _Result = week.ToString() + txtStartDate.Value.Year.ToString();
+            return _Result;
+        }
 
+        private string GetUniqueNumber(string number)
+        {
+            MesOrderKeeper keeper = new MesOrderKeeper();
+            bool found = false;
+            int i = 1;
+            do
+            {
+                if (!keeper.OrderExists(number + i.ToString()))
+                {
+                    found = true;
+                }
+                i += i;
+            } while (found == false);
+            return number + (i - 1).ToString();
+        }
+
+        private void AddOrders(List<Machine> Machines)
+        {
+            MachineKeeper MachineKeeper = new MachineKeeper();
+            MachineKeeper.LoadFromMes(new int[] { 1, 2, 3 });
+
+            foreach (Machine mach in Machines.Where(m => m.IsSelected == true))
+            {
+                MesOrder mesOrder = new MesOrder();
+                if (mach.Type == "g" || mach.Type == "p")
+                {
+                    mesOrder.Number = GetUniqueNumber(CreatePrefix() + mach.Name.Substring(0,1) + mach.Number.ToString() + txtSuffix.Text);
+                }
+                else
+                {
+                    mesOrder.Number = GetUniqueNumber(CreatePrefix() + mach.Name.Substring(0, 2) + mach.Number.ToString() + txtSuffix.Text);
+                }
+                
+                mesOrder.Name = txtDescription.Text;
+                mesOrder.Description = txtDescription.Text;
+                mesOrder.ScheduledStartDate = txtStartDate.Value;
+                mesOrder.ScheduledFinishDate = txtStartDate.Value.AddMinutes(Convert.ToInt32(txtLength.Text));
+                mesOrder.Machine = MachineKeeper.Machines.Where(m => m.MesNumber == mach.Name.Trim()).FirstOrDefault();
+                mesOrder.Type = (MesOrderType)cmbType.SelectedValue;
+            }
         }
     }
 }

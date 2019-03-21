@@ -102,8 +102,9 @@
     <Compile Include="Models\Filter.cs" />
     <Compile Include="Models\FilterColumn.cs" />
     <Compile Include="Models\Machine.cs" />
+    <Compile Include="Models\MachineKeeper.cs" />
     <Compile Include="Models\MesOrder.cs" />
-    <Compile Include="Models\MesOrders.cs" />
+    <Compile Include="Models\MesOrderKeeper.cs" />
     <Compile Include="Models\Orders.cs" />
     <Compile Include="Models\ProductionUsage.cs" />
     <Compile Include="Static\ExtensionMethods.cs" />

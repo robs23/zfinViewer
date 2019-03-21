@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Oracle.ManagedDataAccess.Client;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace zfinViewer.Models
 {
-    public class MesOrders
+    public class MesOrderKeeper
     {
-        public MesOrders()
+        public MesOrderKeeper()
         {
 
         }
@@ -37,5 +38,15 @@ namespace zfinViewer.Models
 
             return Existent;
         }
+    }
+
+    public enum MesOrderType
+    {
+        Szkolenie = 12,
+        Przestój =11,
+        Awaria = 1,
+        Remont = 2,
+        Przegląd = 3,
+        Usterka = 4
     }
 }

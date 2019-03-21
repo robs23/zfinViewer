@@ -37,17 +37,19 @@
             this.dgvRestrictions = new System.Windows.Forms.DataGridView();
             this.tlpDetailsLeft = new System.Windows.Forms.TableLayoutPanel();
             this.label2 = new System.Windows.Forms.Label();
-            this.txtPrefix = new System.Windows.Forms.TextBox();
+            this.txtSuffix = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.lblExample = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.txtDescription = new System.Windows.Forms.TextBox();
             this.txtLength = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.lblEndDate = new System.Windows.Forms.Label();
             this.txtStartDate = new System.Windows.Forms.DateTimePicker();
+            this.label3 = new System.Windows.Forms.Label();
+            this.cmbType = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.tlpButtons.SuspendLayout();
             this.tlpDetails.SuspendLayout();
@@ -157,23 +159,26 @@
             this.tlpDetailsLeft.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
             this.tlpDetailsLeft.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpDetailsLeft.Controls.Add(this.label2, 0, 1);
-            this.tlpDetailsLeft.Controls.Add(this.txtPrefix, 1, 0);
+            this.tlpDetailsLeft.Controls.Add(this.txtSuffix, 1, 0);
             this.tlpDetailsLeft.Controls.Add(this.label1, 0, 0);
             this.tlpDetailsLeft.Controls.Add(this.lblExample, 1, 1);
             this.tlpDetailsLeft.Controls.Add(this.label4, 0, 2);
-            this.tlpDetailsLeft.Controls.Add(this.label5, 0, 3);
-            this.tlpDetailsLeft.Controls.Add(this.label6, 0, 4);
-            this.tlpDetailsLeft.Controls.Add(this.textBox1, 1, 2);
-            this.tlpDetailsLeft.Controls.Add(this.txtLength, 1, 4);
-            this.tlpDetailsLeft.Controls.Add(this.label7, 0, 5);
-            this.tlpDetailsLeft.Controls.Add(this.lblEndDate, 1, 5);
-            this.tlpDetailsLeft.Controls.Add(this.txtStartDate, 1, 3);
+            this.tlpDetailsLeft.Controls.Add(this.txtDescription, 1, 2);
+            this.tlpDetailsLeft.Controls.Add(this.lblEndDate, 1, 6);
+            this.tlpDetailsLeft.Controls.Add(this.label7, 0, 6);
+            this.tlpDetailsLeft.Controls.Add(this.label6, 0, 5);
+            this.tlpDetailsLeft.Controls.Add(this.txtLength, 1, 5);
+            this.tlpDetailsLeft.Controls.Add(this.txtStartDate, 1, 4);
+            this.tlpDetailsLeft.Controls.Add(this.label5, 0, 4);
+            this.tlpDetailsLeft.Controls.Add(this.label3, 0, 3);
+            this.tlpDetailsLeft.Controls.Add(this.cmbType, 1, 3);
             this.tlpDetailsLeft.Location = new System.Drawing.Point(3, 3);
             this.tlpDetailsLeft.Name = "tlpDetailsLeft";
-            this.tlpDetailsLeft.RowCount = 7;
+            this.tlpDetailsLeft.RowCount = 8;
             this.tlpDetailsLeft.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tlpDetailsLeft.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tlpDetailsLeft.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.tlpDetailsLeft.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tlpDetailsLeft.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tlpDetailsLeft.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tlpDetailsLeft.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
@@ -192,14 +197,14 @@
             this.label2.TabIndex = 1;
             this.label2.Text = "Przykładowa nazwa zlecenia";
             // 
-            // txtPrefix
+            // txtSuffix
             // 
-            this.txtPrefix.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtPrefix.Location = new System.Drawing.Point(153, 5);
-            this.txtPrefix.Name = "txtPrefix";
-            this.txtPrefix.Size = new System.Drawing.Size(232, 20);
-            this.txtPrefix.TabIndex = 2;
-            this.txtPrefix.TextChanged += new System.EventHandler(this.txtPrefix_TextChanged);
+            this.txtSuffix.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtSuffix.Location = new System.Drawing.Point(153, 5);
+            this.txtSuffix.Name = "txtSuffix";
+            this.txtSuffix.Size = new System.Drawing.Size(232, 20);
+            this.txtSuffix.TabIndex = 2;
+            this.txtSuffix.TextChanged += new System.EventHandler(this.txtPrefix_TextChanged);
             // 
             // label1
             // 
@@ -209,7 +214,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(144, 13);
             this.label1.TabIndex = 4;
-            this.label1.Text = "Prefix";
+            this.label1.Text = "Suffix";
             // 
             // lblExample
             // 
@@ -235,7 +240,7 @@
             // 
             this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(3, 118);
+            this.label5.Location = new System.Drawing.Point(3, 148);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(144, 13);
             this.label5.TabIndex = 7;
@@ -245,25 +250,25 @@
             // 
             this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(3, 148);
+            this.label6.Location = new System.Drawing.Point(3, 178);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(144, 13);
             this.label6.TabIndex = 8;
             this.label6.Text = "Długość [min]";
             // 
-            // textBox1
+            // txtDescription
             // 
-            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox1.Location = new System.Drawing.Point(153, 64);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(232, 41);
-            this.textBox1.TabIndex = 9;
+            this.txtDescription.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtDescription.Location = new System.Drawing.Point(153, 64);
+            this.txtDescription.Multiline = true;
+            this.txtDescription.Name = "txtDescription";
+            this.txtDescription.Size = new System.Drawing.Size(232, 41);
+            this.txtDescription.TabIndex = 9;
             // 
             // txtLength
             // 
             this.txtLength.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtLength.Location = new System.Drawing.Point(153, 145);
+            this.txtLength.Location = new System.Drawing.Point(153, 175);
             this.txtLength.Name = "txtLength";
             this.txtLength.Size = new System.Drawing.Size(232, 20);
             this.txtLength.TabIndex = 11;
@@ -273,7 +278,7 @@
             // 
             this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(3, 178);
+            this.label7.Location = new System.Drawing.Point(3, 208);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(144, 13);
             this.label7.TabIndex = 12;
@@ -283,7 +288,7 @@
             // 
             this.lblEndDate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.lblEndDate.AutoSize = true;
-            this.lblEndDate.Location = new System.Drawing.Point(153, 178);
+            this.lblEndDate.Location = new System.Drawing.Point(153, 208);
             this.lblEndDate.Name = "lblEndDate";
             this.lblEndDate.Size = new System.Drawing.Size(232, 13);
             this.lblEndDate.TabIndex = 13;
@@ -293,11 +298,30 @@
             this.txtStartDate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.txtStartDate.CustomFormat = "yyyy-MM-dd HH:mm";
             this.txtStartDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.txtStartDate.Location = new System.Drawing.Point(153, 115);
+            this.txtStartDate.Location = new System.Drawing.Point(153, 145);
             this.txtStartDate.Name = "txtStartDate";
             this.txtStartDate.Size = new System.Drawing.Size(232, 20);
             this.txtStartDate.TabIndex = 14;
             this.txtStartDate.ValueChanged += new System.EventHandler(this.txtStartDate_ValueChanged);
+            // 
+            // label3
+            // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(3, 118);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(144, 13);
+            this.label3.TabIndex = 15;
+            this.label3.Text = "Typ";
+            // 
+            // cmbType
+            // 
+            this.cmbType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbType.FormattingEnabled = true;
+            this.cmbType.Location = new System.Drawing.Point(153, 114);
+            this.cmbType.Name = "cmbType";
+            this.cmbType.Size = new System.Drawing.Size(232, 21);
+            this.cmbType.TabIndex = 16;
             // 
             // frmScheduleRestrictionDetaills
             // 
@@ -327,17 +351,19 @@
         private System.Windows.Forms.DataGridView dgvRestrictions;
         private System.Windows.Forms.TableLayoutPanel tlpDetailsLeft;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox txtPrefix;
+        private System.Windows.Forms.TextBox txtSuffix;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label lblExample;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txtDescription;
         private System.Windows.Forms.TextBox txtLength;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label lblEndDate;
         private System.Windows.Forms.Button btnSelectAllNone;
         private System.Windows.Forms.DateTimePicker txtStartDate;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ComboBox cmbType;
     }
 }
