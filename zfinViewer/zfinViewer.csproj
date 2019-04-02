@@ -103,6 +103,7 @@
     <Compile Include="Models\FilterColumn.cs" />
     <Compile Include="Models\Machine.cs" />
     <Compile Include="Models\MachineKeeper.cs" />
+    <Compile Include="Models\MesOperation.cs" />
     <Compile Include="Models\MesOrder.cs" />
     <Compile Include="Models\MesOrderKeeper.cs" />
     <Compile Include="Models\Orders.cs" />
