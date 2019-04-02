@@ -238,6 +238,7 @@ namespace zfinViewer
                 mesOrder.ScheduledFinishDate = txtStartDate.Value.AddMinutes(Convert.ToInt32(txtLength.Text));
                 mesOrder.Machine = MachineKeeper.Machines.Where(m => m.MesNumber == mach.Name.Trim()).FirstOrDefault();
                 mesOrder.Type = (MesOrderType)cmbType.SelectedValue;
+                mesOrder.Add();
             }
         }
     }

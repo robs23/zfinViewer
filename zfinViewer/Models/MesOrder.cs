@@ -33,14 +33,15 @@ namespace zfinViewer.Models
             }
 
 
-            string iStr = @"INSERT INTO QMES_WIP_ORDER (ORDER_NR, NAME, DESCRIPTION_LONG, ORDER_TYPE_ID, SCHEDULED_START_DATE, SCHEDULED_END_DATE, MACHINE_ID, STATUS) 
-                            VALUES (:TheNumber, :TheName, :Description, :TypeId, :ScheduledStart, :ScheduledFinish, :MachineId, :Status)";
+            string iStr = @"INSERT INTO QMES_WIP_ORDER (ORDER_ID, ORDER_NR, NAME, DESCRIPTION_LONG, ORDER_TYPE_ID, SCHEDULED_START_DATE, SCHEDULED_END_DATE, MACHINE_ID, STATUS, C_USER, C_DATE, LM_USER, LM_DATE, TYPE_STATE_ID) 
+                            VALUES (:TheId, :TheNumber, :TheName, :Description, :TypeId, :ScheduledStart, :ScheduledFinish, :MachineId, :Status, :CreatedBy, :CreatedOn, :LmBy, :LmOn, :StateId)";
             try
             {
                 var Command = new Oracle.ManagedDataAccess.Client.OracleCommand(iStr, Con);
 
                 OracleParameter[] parameters = new OracleParameter[]
                 {
+                new OracleParameter("TheId", 1051273),
                 new OracleParameter("TheNumber", this.Number),
                 new OracleParameter("TheName", this.Name),
                 new OracleParameter("Description", this.Description),
@@ -48,10 +49,19 @@ namespace zfinViewer.Models
                 new OracleParameter("ScheduledStart", this.ScheduledStartDate),
                 new OracleParameter("ScheduledFinish", this.ScheduledFinishDate),
                 new OracleParameter("MachineId", this.Machine.MesId),
-                new OracleParameter("Status", "OK")
+                new OracleParameter("Status", "OK"),
+                new OracleParameter("CreatedBy",247),
+                new OracleParameter("CreatedOn",DateTime.Now),
+                new OracleParameter("LmBy",247),
+                new OracleParameter("LmOn",DateTime.Now),
+                new OracleParameter("StateId",10)
                 };
                 Command.Parameters.AddRange(parameters);
+                //OracleParameter outputParameter = new OracleParameter("returnedId", OracleDbType.Decimal);
+                //outputParameter.Direction = System.Data.ParameterDirection.Output;
+                //Command.Parameters.Add(outputParameter);
                 Command.ExecuteNonQuery();
+                //decimal id = Convert.ToDecimal(outputParameter.Value);
             }catch(Exception ex)
             {
                 _Result = $"Error: {ex.Message}";
