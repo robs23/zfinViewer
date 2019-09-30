@@ -160,6 +160,32 @@ namespace zfinViewer
             SqlDataAdapter sqlDataAdap = new SqlDataAdapter(sqlComand);
             DataTable dtProd = new DataTable();
             sqlDataAdap.Fill(dtProd);
+            if(cmbDataType.Text== "Przepływ")
+            {
+                double prevValue = 0;
+                DataColumn col = new DataColumn("Stan po");
+                dtProd.Columns.Add(col);
+                col.SetOrdinal(3);
+                double currValue = 0;
+
+                for (int i = 0; i < dtProd.Rows.Count; i++)
+                {
+                    
+                    if ((string)dtProd.Rows[i][1]!="Zapas")
+                    {
+                        currValue = prevValue + Convert.ToDouble(dtProd.Rows[i][2]);
+                        dtProd.Rows[i][3] = currValue;
+                        prevValue = Convert.ToDouble(dtProd.Rows[i][3]);
+                    }
+                    else
+                    {
+                        dtProd.Rows[i][3] = currValue;
+                        prevValue = Convert.ToDouble(dtProd.Rows[i][2]);
+                    }
+                    
+                }
+            }
+            
             dgProd.DataSource = dtProd;
         }
 
@@ -350,9 +376,9 @@ namespace zfinViewer
                     {
                         case "Bez podsumowania":
                             prodHistStr = @"SELECT CONVERT(date,sh.PlannedDate) as [Plan], 
-                            (SELECT TOP(1) CONVERT(date,t.transportDate) FROM tbDeliveryDetail dd LEFT JOIN tbCmr c ON c.detailId=dd.cmrDetailId LEFT JOIN tbTransport t ON t.transportId=c.transportId WHERE CHARINDEX(CONVERT(nvarchar,sh.DeliveryNotes),dd.deliveryNote)>0) as [Wysłano],
-                            (SELECT TOP(1) sht.shipToString + ' ' + cd.companyName + ', ' + cd.companyCountry FROM tbDeliveryDetail dd LEFT JOIN tbShipTo sht ON sht.shipToId=dd.shipToId LEFT JOIN tbCompanyDetails cd ON cd.companyId=sht.companyId WHERE CHARINDEX(CONVERT(nvarchar,sh.DeliveryNotes),dd.deliveryNote)>0) as [Miejsce dostawy],
-                            (SELECT TOP(1) CASE WHEN t.transportStatus = 2 THEN 'Wysłano' ELSE 'Oczekuje' END FROM tbDeliveryDetail dd LEFT JOIN tbCmr c ON c.detailId=dd.cmrDetailId LEFT JOIN tbTransport t ON t.transportId=c.transportId WHERE CHARINDEX(CONVERT(nvarchar,sh.DeliveryNotes),dd.deliveryNote)>0) as Status,
+                            (SELECT TOP(1) CONVERT(date,t.transportDate) FROM tbDeliveryDetail dd LEFT JOIN tbCmr c ON c.detailId=dd.cmrDetailId LEFT JOIN tbTransport t ON t.transportId=c.transportId WHERE CHARINDEX(CONVERT(nvarchar,LEFT(sh.DeliveryNotes,10)),dd.deliveryNote)>0) as [Wysłano],
+                            (SELECT TOP(1) sht.shipToString + ' ' + cd.companyName + ', ' + cd.companyCountry FROM tbDeliveryDetail dd LEFT JOIN tbShipTo sht ON sht.shipToId=dd.shipToId LEFT JOIN tbCompanyDetails cd ON cd.companyId=sht.companyId WHERE CHARINDEX(CONVERT(nvarchar,LEFT(sh.DeliveryNotes,10)),dd.deliveryNote)>0) as [Miejsce dostawy],
+                            (SELECT TOP(1) CASE WHEN t.transportStatus = 2 THEN 'Wysłano' ELSE 'Oczekuje' END FROM tbDeliveryDetail dd LEFT JOIN tbCmr c ON c.detailId=dd.cmrDetailId LEFT JOIN tbTransport t ON t.transportId=c.transportId WHERE CHARINDEX(CONVERT(nvarchar,LEFT(sh.DeliveryNotes,10)),dd.deliveryNote)>0) as Status,
                             sh.DeliveryNotes as [Delivery Note], poi.Amount as [PC],
                             poi.Amount*u.unitWeight as [KG],
                             poi.Amount/u.pcPerPallet as [PAL]
@@ -410,22 +436,7 @@ namespace zfinViewer
                     switch (cmbStatType.Text)
                     {
                         case "Bez podsumowania":
-                            prodHistStr = @"SELECT CONVERT(date,sh.PlannedDate) as [Data], 
-                            'Wysyłka' as [Typ],
-                            poi.Amount * -1 as [PC],
-                            poi.Amount*u.unitWeight *-1 as [KG],
-                            poi.Amount/u.pcPerPallet *-1 as [PAL],
-                            sh.DeliveryNotes as [Delivery Note],
-                            (SELECT TOP(1) sht.shipToString + ' ' + cd.companyName + ', ' + cd.companyCountry FROM tbDeliveryDetail dd LEFT JOIN tbShipTo sht ON sht.shipToId=dd.shipToId LEFT JOIN tbCompanyDetails cd ON cd.companyId=sht.companyId WHERE CHARINDEX(CONVERT(nvarchar,sh.DeliveryNotes),dd.deliveryNote)>0) as [Dostawa],
-                            (SELECT TOP(1) CASE WHEN t.transportStatus = 2 THEN 'Wysłano' ELSE 'Oczekuje' END FROM tbDeliveryDetail dd LEFT JOIN tbCmr c ON c.detailId=dd.cmrDetailId LEFT JOIN tbTransport t ON t.transportId=c.transportId WHERE CHARINDEX(CONVERT(nvarchar,sh.DeliveryNotes),dd.deliveryNote)>0) as [Status]
-                            FROM tbPlannedShipments sh
-                            LEFT JOIN tbPo po ON po.shipmentId=sh.PlannedShipmentId
-                            LEFT JOIN tbPoItem poi ON poi.PoId=po.PoId
-                            LEFT JOIN tbZfin z ON z.zfinId=poi.ProductId
-                            LEFT JOIN tbUom u ON u.zfinId=z.zfinId
-                            WHERE z.zfinIndex=@index
-                            UNION ALL
-                            SELECT CONVERT(date,ps.PlannedDate) as [Data],
+                            prodHistStr = @"SELECT CONVERT(date,ps.PlannedDate) as [Data],
                             'Zapas' as [Typ],
                             SUM(ps.Amount) as [PC], 
                             SUM(ps.Amount*u.unitWeight) as [KG], 
@@ -450,7 +461,22 @@ namespace zfinViewer
                             FROM tbOperations o LEFT JOIN tbOperationData od ON od.operationId=o.operationId LEFT JOIN tbZfin z ON z.zfinId=o.zfinId LEFT JOIN tbMachine m ON m.machineId=od.plMach LEFT JOIN tbZfinProperties zp ON zp.zfinId=z.zfinId LEFT JOIN tbUom u ON u.zfinId=z.zfinId LEFT JOIN tbCustomerString cs ON cs.custStringId = z.custString LEFT JOIN tbPallets p ON p.palletId=u.palletType
                             WHERE od.plMoment >= @startDate AND o.type = 'p' AND z.zfinIndex=@index
                             GROUP BY od.plMoment
-                            ORDER BY [Data]";
+                            UNION ALL
+                            SELECT CONVERT(date,sh.PlannedDate) as [Data], 
+                            'Wysyłka' as [Typ],
+                            poi.Amount * -1 as [PC],
+                            poi.Amount*u.unitWeight *-1 as [KG],
+                            poi.Amount/u.pcPerPallet *-1 as [PAL],
+                            sh.DeliveryNotes as [Delivery Note],
+                            (SELECT TOP(1) sht.shipToString + ' ' + cd.companyName + ', ' + cd.companyCountry FROM tbDeliveryDetail dd LEFT JOIN tbShipTo sht ON sht.shipToId=dd.shipToId LEFT JOIN tbCompanyDetails cd ON cd.companyId=sht.companyId WHERE CHARINDEX(CONVERT(nvarchar,LEFT(sh.DeliveryNotes,10)),dd.deliveryNote)>0) as [Dostawa],
+                            (SELECT TOP(1) CASE WHEN t.transportStatus = 2 THEN 'Wysłano' ELSE 'Oczekuje' END FROM tbDeliveryDetail dd LEFT JOIN tbCmr c ON c.detailId=dd.cmrDetailId LEFT JOIN tbTransport t ON t.transportId=c.transportId WHERE CHARINDEX(CONVERT(nvarchar,LEFT(sh.DeliveryNotes,10)),dd.deliveryNote)>0) as [Status]
+                            FROM tbPlannedShipments sh
+                            LEFT JOIN tbPo po ON po.shipmentId=sh.PlannedShipmentId
+                            LEFT JOIN tbPoItem poi ON poi.PoId=po.PoId
+                            LEFT JOIN tbZfin z ON z.zfinId=poi.ProductId
+                            LEFT JOIN tbUom u ON u.zfinId=z.zfinId
+                            WHERE z.zfinIndex=@index
+                            ORDER BY [Data],[Typ] DESC";
                             updateProdHistory(prodHistStr);
                             break;
                     }
