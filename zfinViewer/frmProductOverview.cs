@@ -468,7 +468,7 @@ namespace zfinViewer
                             poi.Amount*u.unitWeight *-1 as [KG],
                             poi.Amount/u.pcPerPallet *-1 as [PAL],
                             sh.DeliveryNotes as [Delivery Note],
-                            (SELECT TOP(1) sht.shipToString + ' ' + cd.companyName + ', ' + cd.companyCountry FROM tbDeliveryDetail dd LEFT JOIN tbShipTo sht ON sht.shipToId=dd.shipToId LEFT JOIN tbCompanyDetails cd ON cd.companyId=sht.companyId WHERE CHARINDEX(CONVERT(nvarchar,LEFT(sh.DeliveryNotes,10)),dd.deliveryNote)>0) as [Dostawa],
+                            po.Lplant + CASE WHEN (SELECT TOP(1) cd.companyCountry FROM tbDeliveryDetail dd LEFT JOIN tbShipTo sht ON sht.shipToId=dd.shipToId LEFT JOIN tbCompanyDetails cd ON cd.companyId=sht.companyId WHERE CHARINDEX(CONVERT(nvarchar,LEFT(sh.DeliveryNotes,10)),dd.deliveryNote)>0) IS NOT NULL THEN ', ' + (SELECT TOP(1) cd.companyCountry FROM tbDeliveryDetail dd LEFT JOIN tbShipTo sht ON sht.shipToId=dd.shipToId LEFT JOIN tbCompanyDetails cd ON cd.companyId=sht.companyId WHERE CHARINDEX(CONVERT(nvarchar,LEFT(sh.DeliveryNotes,10)),dd.deliveryNote)>0) ELSE '' END as [Dostawa],
                             (SELECT TOP(1) CASE WHEN t.transportStatus = 2 THEN 'Wysłano' ELSE 'Oczekuje' END FROM tbDeliveryDetail dd LEFT JOIN tbCmr c ON c.detailId=dd.cmrDetailId LEFT JOIN tbTransport t ON t.transportId=c.transportId WHERE CHARINDEX(CONVERT(nvarchar,LEFT(sh.DeliveryNotes,10)),dd.deliveryNote)>0) as [Status]
                             FROM tbPlannedShipments sh
                             LEFT JOIN tbPo po ON po.shipmentId=sh.PlannedShipmentId

@@ -33,6 +33,7 @@ namespace zfinViewer
         public string UoM { get; set; }
         public Product Parent { get; set; }//if it's component
         public List<ProductionUsage> ProductionUsages { get; set; }
+        public bool IsActive { get; set; }
 
         public Product()
         {

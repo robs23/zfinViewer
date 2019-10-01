@@ -38,6 +38,7 @@
             this.zPKGToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.planProdukcjiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ograniczeniaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.opcjeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgItems)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -67,9 +68,10 @@
             // txtSearch
             // 
             this.txtSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtSearch.Location = new System.Drawing.Point(3, 30);
+            this.txtSearch.Location = new System.Drawing.Point(4, 30);
+            this.txtSearch.Margin = new System.Windows.Forms.Padding(4, 3, 3, 3);
             this.txtSearch.Name = "txtSearch";
-            this.txtSearch.Size = new System.Drawing.Size(367, 20);
+            this.txtSearch.Size = new System.Drawing.Size(366, 20);
             this.txtSearch.TabIndex = 0;
             this.txtSearch.TextChanged += new System.EventHandler(this.updateSearch);
             this.txtSearch.KeyUp += new System.Windows.Forms.KeyEventHandler(this.SearchKeyUp);
@@ -104,7 +106,8 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.bilansMasToolStripMenuItem,
-            this.planProdukcjiToolStripMenuItem});
+            this.planProdukcjiToolStripMenuItem,
+            this.opcjeToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(373, 20);
@@ -123,13 +126,13 @@
             // zFORToolStripMenuItem
             // 
             this.zFORToolStripMenuItem.Name = "zFORToolStripMenuItem";
-            this.zFORToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.zFORToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
             this.zFORToolStripMenuItem.Text = "ZFOR";
             // 
             // zPKGToolStripMenuItem
             // 
             this.zPKGToolStripMenuItem.Name = "zPKGToolStripMenuItem";
-            this.zPKGToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.zPKGToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
             this.zPKGToolStripMenuItem.Text = "ZPKG";
             this.zPKGToolStripMenuItem.Click += new System.EventHandler(this.zPKGToolStripMenuItem_Click);
             // 
@@ -147,6 +150,12 @@
             this.ograniczeniaToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.ograniczeniaToolStripMenuItem.Text = "Ograniczenia";
             this.ograniczeniaToolStripMenuItem.Click += new System.EventHandler(this.ograniczeniaToolStripMenuItem_Click);
+            // 
+            // opcjeToolStripMenuItem
+            // 
+            this.opcjeToolStripMenuItem.Name = "opcjeToolStripMenuItem";
+            this.opcjeToolStripMenuItem.Size = new System.Drawing.Size(50, 16);
+            this.opcjeToolStripMenuItem.Text = "Opcje";
             // 
             // frmZfinSearch
             // 
@@ -178,5 +187,6 @@
         private System.Windows.Forms.ToolStripMenuItem zPKGToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem planProdukcjiToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ograniczeniaToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem opcjeToolStripMenuItem;
     }
 }

@@ -7,9 +7,9 @@ public interface ISearchable
 {
     int ID { get; set; }
     int Index { get; set; }
-    string SearchableString { get; }
     string Type { get; set; }
-
+    string SearchableString { get; }
+    bool IsActive { get; set; }
 
 }
 
@@ -54,5 +54,6 @@ namespace zfinViewer
         public string SecondaryMail { get; set; }
         public string Phone { get; set; }
         public string Mobile { get; set; }
+        public bool IsActive { get; set; }
     }
 }
