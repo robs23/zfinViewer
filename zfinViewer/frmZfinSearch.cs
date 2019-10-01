@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using System.Linq.Dynamic;
 
 namespace zfinViewer
 {
@@ -38,20 +39,40 @@ namespace zfinViewer
         private void UpdateResults()
         {
             string str = txtSearch.Text;
+            string qStr = "";
+
             if (str.Length > 0)
             {
-                if (ActiveOnly)
+                string[] strs = str.Split(' ');
+                if (strs.Length > 0)
                 {
-                    filteredItems = from pr in items
-                                    where (pr.SearchableString.IndexOf(str, StringComparison.OrdinalIgnoreCase) >= 0 || pr.Index.ToString().IndexOf(str, StringComparison.OrdinalIgnoreCase) >= 0) && pr.IsActive == true
-                                    select pr;
+                    //there are space-separeated search parameters
+                    foreach(string s in strs)
+                    {
+                        qStr += $"(SearchableString.ToLower().Contains(\"{s}\") OR Index.ToString().Contains(\"{s}\") OR Type.ToLower().Contains(\"{s}\")) AND ";
+                    }
+                    if (!string.IsNullOrEmpty(qStr))
+                    {
+                        qStr = qStr.Substring(0, qStr.Length - 5);
+                    }
+                    if (ActiveOnly)
+                    {
+
+                        filteredItems = items.Where("IsActive=true AND " + qStr);
+                        //filteredItems = from pr in items
+                        //                where (pr.SearchableString.IndexOf(str, StringComparison.OrdinalIgnoreCase) >= 0 || pr.Index.ToString().IndexOf(str, StringComparison.OrdinalIgnoreCase) >= 0) && pr.IsActive == true
+                        //                select pr;
+                    }
+                    else
+                    {
+                        filteredItems = items.Where(qStr);
+                        //filteredItems = from pr in items
+                        //                where pr.SearchableString.IndexOf(str, StringComparison.OrdinalIgnoreCase) >= 0 || pr.Index.ToString().IndexOf(str, StringComparison.OrdinalIgnoreCase) >= 0
+                        //                select pr;
+                    }
                 }
-                else
-                {
-                    filteredItems = from pr in items
-                                    where pr.SearchableString.IndexOf(str, StringComparison.OrdinalIgnoreCase) >= 0 || pr.Index.ToString().IndexOf(str, StringComparison.OrdinalIgnoreCase) >= 0
-                                    select pr;
-                }
+
+                
 
                 dgItems.DataSource = filteredItems.ToList();
                 lblHitsCount.Text = "Liczba pasujących pozycji: " + filteredItems.ToList().Count.ToString();
@@ -80,7 +101,7 @@ namespace zfinViewer
         private void action(int rowIndex)
         {
             int i = rowIndex;
-            string type = dgItems.Rows[i].Cells[3].Value.ToString();
+            string type = dgItems.Rows[i].Cells[2].Value.ToString();
             if (string.Equals(type, "zfin", StringComparison.OrdinalIgnoreCase) || string.Equals(type, "zfor", StringComparison.OrdinalIgnoreCase) || string.Equals(type, "zcom", StringComparison.OrdinalIgnoreCase) || string.Equals(type, "zpkg", StringComparison.OrdinalIgnoreCase))
             {
                 int zfinIndex = Convert.ToInt32(dgItems.Rows[i].Cells[1].Value);
