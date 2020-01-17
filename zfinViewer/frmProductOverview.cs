@@ -149,7 +149,7 @@ namespace zfinViewer
 
         private void updateProdHistory(string sqlStr)
         {
-            DateTime startDate = new DateTime(2019, 9, 22,22,0,0);
+            DateTime startDate = DateTime.Now.StartOfWeek(DayOfWeek.Monday); //new DateTime(2019, 9, 22,22,0,0);
             dgProd.DataSource = sqlStr;
             SqlConnection conn = new SqlConnection(Variables.npdConnectionString);
             SqlCommand sqlComand = new SqlCommand(sqlStr, conn);
@@ -398,17 +398,32 @@ namespace zfinViewer
                     switch (cmbStatType.Text)
                     {
                         case "Bez podsumowania":
-                            prodHistStr = @"SELECT pp.Week as [Tydzień], 
-                            pp.Year as [Rok], 
-                            pp.Lplant as [Alokacja],
-                            pp.Amount as [PC], 
-                            pp.Amount*u.unitWeight as [KG], 
-                            pp.Amount/u.pcPerPallet as [PAL]
-                            FROM tbPlannedProduction pp
-                            LEFT JOIN tbZfin z ON pp.ProductId=z.zfinId
-                            LEFT JOIN tbUom u ON u.zfinId=z.zfinId
-                            WHERE z.zfinIndex=@index
-                            ORDER BY pp.Year, pp.Week";
+                            prodHistStr = @"
+                                        DECLARE @weekFrom int = DATEPART(ISO_WEEK,@startDate),
+		                                @yearFrom int = YEAR(@startDate)
+                                        SELECT CONVERT(nvarchar, pp.Year) + '-' + CONVERT(nvarchar, pp.Week) as [Tydzień], 
+                                        pp.Lplant as [Alokacja],
+                                        (SELECT TOP(1) ps.Amount FROM tbPlannedStock ps WHERE ps.Lplant=pp.Lplant AND ps.ProductId=pp.ProductId AND CONVERT(nvarchar,YEAR(ps.PlannedDate)) + '-' + CONVERT(nvarchar,DATEPART(ISO_WEEK,ps.PlannedDate)) = CONVERT(nvarchar, pp.Year) + '-' + CONVERT(nvarchar, pp.Week)) as [Zapas],
+                                        pp.Amount as [Plan],
+                                        (
+	                                        SELECT SUM(t.PC) as [Wysłano] FROM
+	                                        (SELECT CONVERT(nvarchar,YEAR(CONVERT(date,sh.PlannedDate)))+'-'+ CONVERT(nvarchar,DATEPART(iso_week,CONVERT(date,sh.PlannedDate))) as [Plan], 
+	                                        (SELECT TOP(1) sht.shipToString + ' ' + cd.companyName + ', ' + cd.companyCountry FROM tbDeliveryDetail dd LEFT JOIN tbShipTo sht ON sht.shipToId=dd.shipToId LEFT JOIN tbCompanyDetails cd ON cd.companyId=sht.companyId WHERE CHARINDEX(CONVERT(nvarchar,LEFT(sh.DeliveryNotes,10)),dd.deliveryNote)>0) as [Miejsce dostawy],
+	                                        (SELECT TOP(1) CASE WHEN t.transportStatus = 2 THEN 'Wysłano' ELSE 'Oczekuje' END FROM tbDeliveryDetail dd LEFT JOIN tbCmr c ON c.detailId=dd.cmrDetailId LEFT JOIN tbTransport t ON t.transportId=c.transportId WHERE CHARINDEX(CONVERT(nvarchar,LEFT(sh.DeliveryNotes,10)),dd.deliveryNote)>0) as Status,
+	                                        poi.Amount as [PC]
+	                                        FROM tbPlannedShipments sh
+	                                        LEFT JOIN tbPo po ON po.shipmentId=sh.PlannedShipmentId
+	                                        LEFT JOIN tbPoItem poi ON poi.PoId=po.PoId
+	                                        LEFT JOIN tbZfin z ON z.zfinId=poi.ProductId
+	                                        LEFT JOIN tbUom u ON u.zfinId=z.zfinId
+	                                        WHERE z.zfinIndex=@index AND pp.Year>=@yearFrom AND pp.Week>=@weekFrom) t
+	                                        WHERE t.Status='Wysłano' AND CHARINDEX(pp.Lplant,t.[Miejsce dostawy])>0 AND t.[Plan]=CONVERT(nvarchar, pp.Year) + '-' + CONVERT(nvarchar, pp.Week)
+                                        ) as [Wysłano]
+                                        FROM tbPlannedProduction pp
+                                        LEFT JOIN tbZfin z ON pp.ProductId=z.zfinId
+                                        LEFT JOIN tbUom u ON u.zfinId=z.zfinId
+                                        WHERE z.zfinIndex=@index
+                                        ORDER BY pp.Year, pp.Week";
                             updateProdHistory(prodHistStr);
                             break;
                     }

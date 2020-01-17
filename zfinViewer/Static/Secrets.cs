@@ -22,5 +22,13 @@ namespace zfinViewer.Static
         {
             get { return "DATA SOURCE=10.142.27.102:1521/QGUAR;PERSIST SECURITY INFO=True;USER ID=QGUARADM;PASSWORD=Quantum88"; }
         }
+
+        public static string SquirrelUpdatePath
+        {
+            get
+            {
+                return "K:\\Common\\Robert\\ZfinViewer\\Releases";
+            }
+        }
     }
 }

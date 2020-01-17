@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmZfinOverview));
             this.tblPanMain = new System.Windows.Forms.TableLayoutPanel();
             this.tabAll = new System.Windows.Forms.TabControl();
             this.pgOverview = new System.Windows.Forms.TabPage();
@@ -1164,6 +1165,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(579, 392);
             this.Controls.Add(this.tblPanMain);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmZfinOverview";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Szczegóły ZFINa";

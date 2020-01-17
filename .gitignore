@@ -261,4 +261,6 @@ __pycache__/
 *.pyc
 
 Static/RuntimeSettings.cs
+Static/Secrets.cs
+/zfinViewer/Static/Secrets.cs
 /zfinViewer/Static/RuntimeSettings.cs

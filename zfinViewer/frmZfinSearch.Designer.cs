@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmZfinSearch));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.dgItems = new System.Windows.Forms.DataGridView();
@@ -147,7 +148,7 @@
             // ograniczeniaToolStripMenuItem
             // 
             this.ograniczeniaToolStripMenuItem.Name = "ograniczeniaToolStripMenuItem";
-            this.ograniczeniaToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.ograniczeniaToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
             this.ograniczeniaToolStripMenuItem.Text = "Ograniczenia";
             this.ograniczeniaToolStripMenuItem.Click += new System.EventHandler(this.ograniczeniaToolStripMenuItem_Click);
             // 
@@ -163,9 +164,11 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(370, 386);
             this.Controls.Add(this.tableLayoutPanel1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmZfinSearch";
             this.Text = "Wpisz numer produktu";
             this.Load += new System.EventHandler(this.loadMe);
+            this.Shown += new System.EventHandler(this.frmZfinSearch_Shown);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgItems)).EndInit();

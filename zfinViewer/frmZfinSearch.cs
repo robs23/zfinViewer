@@ -10,12 +10,13 @@ using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Linq.Dynamic;
+using Squirrel;
 
 namespace zfinViewer
 {
     public partial class frmZfinSearch : Form
     {
-        SqlConnection conn = new SqlConnection(Variables.npdConnectionString);
+        SqlConnection conn;
         List<ISearchable> items = new List<ISearchable>();
         List<ISearchable> allItems = new List<ISearchable>(); //items matching checked criteria e.g. IsActive
         IEnumerable<ISearchable> filteredItems;
@@ -24,10 +25,20 @@ namespace zfinViewer
         public frmZfinSearch()  
         {
             InitializeComponent();
+            
+            
         }
 
         private void loadMe(object sender, EventArgs e)
         {
+            try
+            {
+                conn = new SqlConnection(Variables.npdConnectionString);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
             loadData();
         }
 
@@ -254,6 +265,24 @@ namespace zfinViewer
         {
             frmScheduleRestrictions FrmScheduleRestrictions = new frmScheduleRestrictions();
             FrmScheduleRestrictions.Show();
+        }
+
+        private async void frmZfinSearch_Shown(object sender, EventArgs e)
+        {
+            this.Text = "ZfinViewer v." + System.Windows.Forms.Application.ProductVersion;
+#if (DEBUG == false)
+                ReleaseEntry release = null;
+                using (var mgr = new UpdateManager(Static.Secrets.SquirrelUpdatePath))
+                {
+                    release = await mgr.UpdateApp();
+                }
+                if (release != null)
+                {
+                    MessageBox.Show("Aplikacja została zaktualizowana do nowszej wersji. Naciśnij OK aby zrestartować aplikację", "Aktualizacja", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    //force app restart
+                    UpdateManager.RestartApp();
+                }
+#endif
         }
     }
 }
