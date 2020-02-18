@@ -111,6 +111,17 @@
             this.label23 = new System.Windows.Forms.Label();
             this.cmbLossesSummary = new System.Windows.Forms.ComboBox();
             this.dgLosses = new System.Windows.Forms.DataGridView();
+            this.pgStats = new System.Windows.Forms.TabPage();
+            this.tlpStats = new System.Windows.Forms.TableLayoutPanel();
+            this.tlpStatsButtons = new System.Windows.Forms.TableLayoutPanel();
+            this.label24 = new System.Windows.Forms.Label();
+            this.label25 = new System.Windows.Forms.Label();
+            this.label26 = new System.Windows.Forms.Label();
+            this.txtStatsDateFrom = new System.Windows.Forms.DateTimePicker();
+            this.txtStatsDateTo = new System.Windows.Forms.DateTimePicker();
+            this.cmbStatsType = new System.Windows.Forms.ComboBox();
+            this.dgvStats = new System.Windows.Forms.DataGridView();
+            this.btnUpdateStats = new System.Windows.Forms.Button();
             this.tblPanMain.SuspendLayout();
             this.tabAll.SuspendLayout();
             this.pgOverview.SuspendLayout();
@@ -140,6 +151,10 @@
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgLosses)).BeginInit();
+            this.pgStats.SuspendLayout();
+            this.tlpStats.SuspendLayout();
+            this.tlpStatsButtons.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvStats)).BeginInit();
             this.SuspendLayout();
             // 
             // tblPanMain
@@ -170,6 +185,7 @@
             this.tabAll.Controls.Add(this.pgBom);
             this.tabAll.Controls.Add(this.pgWhereUsed);
             this.tabAll.Controls.Add(this.pgLoss);
+            this.tabAll.Controls.Add(this.pgStats);
             this.tabAll.Location = new System.Drawing.Point(3, 3);
             this.tabAll.Name = "tabAll";
             this.tabAll.SelectedIndex = 0;
@@ -1159,6 +1175,143 @@
             this.dgLosses.TabIndex = 2;
             this.dgLosses.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.digg);
             // 
+            // pgStats
+            // 
+            this.pgStats.Controls.Add(this.tlpStats);
+            this.pgStats.Location = new System.Drawing.Point(4, 22);
+            this.pgStats.Name = "pgStats";
+            this.pgStats.Padding = new System.Windows.Forms.Padding(3);
+            this.pgStats.Size = new System.Drawing.Size(543, 344);
+            this.pgStats.TabIndex = 8;
+            this.pgStats.Text = "Statystyki";
+            this.pgStats.UseVisualStyleBackColor = true;
+            // 
+            // tlpStats
+            // 
+            this.tlpStats.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tlpStats.ColumnCount = 1;
+            this.tlpStats.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpStats.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tlpStats.Controls.Add(this.tlpStatsButtons, 0, 0);
+            this.tlpStats.Controls.Add(this.dgvStats, 0, 1);
+            this.tlpStats.Location = new System.Drawing.Point(6, 6);
+            this.tlpStats.Name = "tlpStats";
+            this.tlpStats.RowCount = 2;
+            this.tlpStats.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tlpStats.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpStats.Size = new System.Drawing.Size(534, 335);
+            this.tlpStats.TabIndex = 0;
+            // 
+            // tlpStatsButtons
+            // 
+            this.tlpStatsButtons.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.tlpStatsButtons.ColumnCount = 7;
+            this.tlpStatsButtons.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tlpStatsButtons.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 140F));
+            this.tlpStatsButtons.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tlpStatsButtons.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 140F));
+            this.tlpStatsButtons.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.tlpStatsButtons.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tlpStatsButtons.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tlpStatsButtons.Controls.Add(this.label24, 0, 0);
+            this.tlpStatsButtons.Controls.Add(this.label25, 2, 0);
+            this.tlpStatsButtons.Controls.Add(this.label26, 4, 0);
+            this.tlpStatsButtons.Controls.Add(this.txtStatsDateFrom, 1, 0);
+            this.tlpStatsButtons.Controls.Add(this.txtStatsDateTo, 3, 0);
+            this.tlpStatsButtons.Controls.Add(this.cmbStatsType, 5, 0);
+            this.tlpStatsButtons.Controls.Add(this.btnUpdateStats, 6, 0);
+            this.tlpStatsButtons.Location = new System.Drawing.Point(3, 3);
+            this.tlpStatsButtons.Name = "tlpStatsButtons";
+            this.tlpStatsButtons.RowCount = 1;
+            this.tlpStatsButtons.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpStatsButtons.Size = new System.Drawing.Size(528, 34);
+            this.tlpStatsButtons.TabIndex = 0;
+            // 
+            // label24
+            // 
+            this.label24.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(6, 10);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(21, 13);
+            this.label24.TabIndex = 0;
+            this.label24.Text = "Od";
+            // 
+            // label25
+            // 
+            this.label25.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.label25.AutoSize = true;
+            this.label25.Location = new System.Drawing.Point(176, 10);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(21, 13);
+            this.label25.TabIndex = 1;
+            this.label25.Text = "Do";
+            // 
+            // label26
+            // 
+            this.label26.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.label26.AutoSize = true;
+            this.label26.Location = new System.Drawing.Point(347, 10);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(40, 13);
+            this.label26.TabIndex = 2;
+            this.label26.Text = "Proces";
+            // 
+            // txtStatsDateFrom
+            // 
+            this.txtStatsDateFrom.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtStatsDateFrom.CustomFormat = "yyyy-MM-dd HH:mm:ss";
+            this.txtStatsDateFrom.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.txtStatsDateFrom.Location = new System.Drawing.Point(33, 7);
+            this.txtStatsDateFrom.Name = "txtStatsDateFrom";
+            this.txtStatsDateFrom.Size = new System.Drawing.Size(134, 20);
+            this.txtStatsDateFrom.TabIndex = 3;
+            // 
+            // txtStatsDateTo
+            // 
+            this.txtStatsDateTo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtStatsDateTo.CustomFormat = "yyyy-MM-dd HH:mm:ss";
+            this.txtStatsDateTo.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.txtStatsDateTo.Location = new System.Drawing.Point(203, 7);
+            this.txtStatsDateTo.Name = "txtStatsDateTo";
+            this.txtStatsDateTo.Size = new System.Drawing.Size(134, 20);
+            this.txtStatsDateTo.TabIndex = 4;
+            // 
+            // cmbStatsType
+            // 
+            this.cmbStatsType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbStatsType.FormattingEnabled = true;
+            this.cmbStatsType.Location = new System.Drawing.Point(393, 6);
+            this.cmbStatsType.Name = "cmbStatsType";
+            this.cmbStatsType.Size = new System.Drawing.Size(94, 21);
+            this.cmbStatsType.TabIndex = 5;
+            // 
+            // dgvStats
+            // 
+            this.dgvStats.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvStats.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvStats.Location = new System.Drawing.Point(3, 43);
+            this.dgvStats.Name = "dgvStats";
+            this.dgvStats.Size = new System.Drawing.Size(528, 289);
+            this.dgvStats.TabIndex = 1;
+            // 
+            // btnUpdateStats
+            // 
+            this.btnUpdateStats.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnUpdateStats.Location = new System.Drawing.Point(493, 3);
+            this.btnUpdateStats.Name = "btnUpdateStats";
+            this.btnUpdateStats.Size = new System.Drawing.Size(32, 28);
+            this.btnUpdateStats.TabIndex = 6;
+            this.btnUpdateStats.Text = "OK";
+            this.btnUpdateStats.UseVisualStyleBackColor = true;
+            this.btnUpdateStats.Click += new System.EventHandler(this.btnUpdateStats_Click);
+            // 
             // frmZfinOverview
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1209,6 +1362,11 @@
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgLosses)).EndInit();
+            this.pgStats.ResumeLayout(false);
+            this.tlpStats.ResumeLayout(false);
+            this.tlpStatsButtons.ResumeLayout(false);
+            this.tlpStatsButtons.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvStats)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1297,6 +1455,17 @@
         private System.Windows.Forms.ComboBox cmbLossesRange;
         private System.Windows.Forms.ComboBox cmbLossesSummary;
         private System.Windows.Forms.DataGridView dgLosses;
+        private System.Windows.Forms.TabPage pgStats;
+        private System.Windows.Forms.TableLayoutPanel tlpStats;
+        private System.Windows.Forms.TableLayoutPanel tlpStatsButtons;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.DateTimePicker txtStatsDateFrom;
+        private System.Windows.Forms.DateTimePicker txtStatsDateTo;
+        private System.Windows.Forms.ComboBox cmbStatsType;
+        private System.Windows.Forms.DataGridView dgvStats;
+        private System.Windows.Forms.Button btnUpdateStats;
     }
 }
 

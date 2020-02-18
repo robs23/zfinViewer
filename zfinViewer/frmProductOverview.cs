@@ -149,7 +149,7 @@ namespace zfinViewer
 
         private void updateProdHistory(string sqlStr)
         {
-            DateTime startDate = DateTime.Now.StartOfWeek(DayOfWeek.Monday); //new DateTime(2019, 9, 22,22,0,0);
+            DateTime startDate = DateTime.Now.AddDays(-7).StartOfWeek(DayOfWeek.Monday); //new DateTime(2019, 9, 22,22,0,0);
             dgProd.DataSource = sqlStr;
             SqlConnection conn = new SqlConnection(Variables.npdConnectionString);
             SqlCommand sqlComand = new SqlCommand(sqlStr, conn);
@@ -375,7 +375,7 @@ namespace zfinViewer
                     switch (cmbStatType.Text)
                     {
                         case "Bez podsumowania":
-                            prodHistStr = @"SELECT CONVERT(date,sh.PlannedDate) as [Plan], 
+                            prodHistStr = @"SELECT CONVERT(date,sh.PlannedDate) as [Plan], po.LPlant  as [L-Plant],
                             (SELECT TOP(1) CONVERT(date,t.transportDate) FROM tbDeliveryDetail dd LEFT JOIN tbCmr c ON c.detailId=dd.cmrDetailId LEFT JOIN tbTransport t ON t.transportId=c.transportId WHERE CHARINDEX(CONVERT(nvarchar,LEFT(sh.DeliveryNotes,10)),dd.deliveryNote)>0) as [Wysłano],
                             (SELECT TOP(1) sht.shipToString + ' ' + cd.companyName + ', ' + cd.companyCountry FROM tbDeliveryDetail dd LEFT JOIN tbShipTo sht ON sht.shipToId=dd.shipToId LEFT JOIN tbCompanyDetails cd ON cd.companyId=sht.companyId WHERE CHARINDEX(CONVERT(nvarchar,LEFT(sh.DeliveryNotes,10)),dd.deliveryNote)>0) as [Miejsce dostawy],
                             (SELECT TOP(1) CASE WHEN t.transportStatus = 2 THEN 'Wysłano' ELSE 'Oczekuje' END FROM tbDeliveryDetail dd LEFT JOIN tbCmr c ON c.detailId=dd.cmrDetailId LEFT JOIN tbTransport t ON t.transportId=c.transportId WHERE CHARINDEX(CONVERT(nvarchar,LEFT(sh.DeliveryNotes,10)),dd.deliveryNote)>0) as Status,
@@ -394,7 +394,7 @@ namespace zfinViewer
                     }
                     break;
 
-                case "Planowana produkcja":
+                case "Podział produkcji":
                     switch (cmbStatType.Text)
                     {
                         case "Bez podsumowania":
@@ -700,7 +700,7 @@ namespace zfinViewer
                 {
                     var historyType = new[]
                     {
-                        "Produkcja","Wysyłki","Zapotrzebowanie","Planowane wysyłki","Planowana produkcja","Zapasy","Przepływ"//,"Wszystko"
+                        "Produkcja","Wysyłki","Zapotrzebowanie","Planowane wysyłki","Podział produkcji","Zapasy","Przepływ"//,"Wszystko"
                     };
                     cmbDataType.DataSource = historyType;
                 }
@@ -724,6 +724,61 @@ namespace zfinViewer
             {
                 SetLosses();
             }
+            if(tabAll.SelectedTab.Text =="Statystyki" && dgvStats.DataSource == null)
+            {
+                SetStats();
+                UpdateStats();
+            }
+        }
+
+        private void UpdateStats()
+        {
+            string sql = "";
+            string type = "";
+            DateTime? dFrom = null;
+            DateTime? dTo = null;
+            switch (cmbStatsType.SelectedText)
+            {
+                case "Prażenie":
+                    type = "r";
+                    break;
+                case "Mielenie":
+                    type = "g";
+                    break;
+                case "Pakowanie":
+                    type = "p";
+                    break;
+                default:
+                    type = "";
+                    break;
+            }
+            sql = @"SELECT m.machineName, (m.Amount/m.Total)*100 AS ProductionStats FROM 
+                    (SELECT m.machineName, SUM(od.plAmount) AS Amount,
+	                    (
+	                    SELECT SUM(od.plAmount) 
+	                    FROM tbOperationData od
+	                    LEFT JOIN tbOperations op ON op.operationId=od.operationId
+	                    LEFT JOIN tbZfin z ON z.zfinId=op.zfinId
+	                    WHERE od.plMoment > @dateFrom  AND od.plMoment < @dateTo AND z.zfinIndex=34005471 AND type=@statType
+	                    ) as Total
+                    FROM
+                    tbOperationData od
+                    LEFT JOIN tbOperations op ON op.operationId=od.operationId
+                    LEFT JOIN tbZfin z ON z.zfinId=op.zfinId
+                    LEFT JOIN tbMachine m ON m.machineId=od.plMach
+                    WHERE od.plMoment > @dateFrom  AND od.plMoment < @dateTo AND z.zfinIndex=34005471 AND type=@statType
+                    GROUP BY m.machineName, type)m
+                    ORDER BY m.Amount DESC";
+
+        }
+
+        private void SetStats()
+        {
+            DateTime PrevDate = DateTime.Now.AddDays(-180);
+            txtStatsDateFrom.Value = PrevDate;
+            txtStatsDateTo.Value = DateTime.Now;
+            List<string> StatTypes = new List<string> { "Prażenie", "Mielenie", "Pakowanie", "Wysyłka" };
+            cmbStatsType.DataSource = StatTypes;
         }
 
         private void cmbLossDataSource_SelectedIndexChanged(object sender, EventArgs e)
@@ -888,6 +943,11 @@ namespace zfinViewer
                     FrmOrder.Show();
                     break;
             }
+        }
+
+        private void btnUpdateStats_Click(object sender, EventArgs e)
+        {
+            UpdateStats();
         }
     }
 
