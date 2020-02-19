@@ -735,9 +735,9 @@ namespace zfinViewer
         {
             string sql = "";
             string type = "";
-            DateTime? dFrom = null;
-            DateTime? dTo = null;
-            switch (cmbStatsType.SelectedText)
+            DateTime? dFrom = txtStatsDateFrom.Value;
+            DateTime? dTo = txtStatsDateTo.Value;
+            switch (cmbStatsType.SelectedItem.ToString())
             {
                 case "Prażenie":
                     type = "r";
@@ -752,23 +752,53 @@ namespace zfinViewer
                     type = "";
                     break;
             }
-            sql = @"SELECT m.machineName, (m.Amount/m.Total)*100 AS ProductionStats FROM 
+            if (string.IsNullOrEmpty(type))
+            {
+
+            }
+            else
+            {
+                sql = @"SELECT m.machineName as [Maszyna], (m.Amount/m.Total)*100 AS [Udział w %] FROM 
                     (SELECT m.machineName, SUM(od.plAmount) AS Amount,
 	                    (
 	                    SELECT SUM(od.plAmount) 
 	                    FROM tbOperationData od
 	                    LEFT JOIN tbOperations op ON op.operationId=od.operationId
 	                    LEFT JOIN tbZfin z ON z.zfinId=op.zfinId
-	                    WHERE od.plMoment > @dateFrom  AND od.plMoment < @dateTo AND z.zfinIndex=34005471 AND type=@statType
+	                    WHERE od.plMoment > @dFrom  AND od.plMoment < @dTo AND z.zfinIndex=@index AND type=@statType
 	                    ) as Total
                     FROM
                     tbOperationData od
                     LEFT JOIN tbOperations op ON op.operationId=od.operationId
                     LEFT JOIN tbZfin z ON z.zfinId=op.zfinId
                     LEFT JOIN tbMachine m ON m.machineId=od.plMach
-                    WHERE od.plMoment > @dateFrom  AND od.plMoment < @dateTo AND z.zfinIndex=34005471 AND type=@statType
+                    WHERE od.plMoment > @dFrom  AND od.plMoment < @dTo AND z.zfinIndex=@index AND type=@statType
                     GROUP BY m.machineName, type)m
                     ORDER BY m.Amount DESC";
+            }
+
+            if (!string.IsNullOrEmpty(sql))
+            {
+                dgvStats.DataSource = sql;
+                SqlConnection conn = new SqlConnection(Variables.npdConnectionString);
+                SqlCommand sqlComand = new SqlCommand(sql, conn);
+                sqlComand.Parameters.Add("@index", SqlDbType.Int);
+                sqlComand.Parameters["@index"].Value = zfinIndex;
+                sqlComand.Parameters.Add("@dFrom", SqlDbType.DateTime);
+                sqlComand.Parameters["@dFrom"].Value = dFrom;
+                sqlComand.Parameters.Add("@dTo", SqlDbType.DateTime);
+                sqlComand.Parameters["@dTo"].Value = dTo;
+                if (!string.IsNullOrEmpty(type))
+                {
+                    sqlComand.Parameters.Add("@statType", SqlDbType.NVarChar);
+                    sqlComand.Parameters["@statType"].Value = type;
+                }
+                SqlDataAdapter sqlDataAdap = new SqlDataAdapter(sqlComand);
+                DataTable dtProd = new DataTable();
+                sqlDataAdap.Fill(dtProd);
+                dgvStats.DataSource = dtProd;
+            }
+            
 
         }
 
@@ -777,8 +807,19 @@ namespace zfinViewer
             DateTime PrevDate = DateTime.Now.AddDays(-180);
             txtStatsDateFrom.Value = PrevDate;
             txtStatsDateTo.Value = DateTime.Now;
-            List<string> StatTypes = new List<string> { "Prażenie", "Mielenie", "Pakowanie", "Wysyłka" };
+            List<string> StatTypes = new List<string>();
+            if (thisProduct.Type.ToLower() == "zfin")
+            {
+                StatTypes.Add("Pakowanie");
+                StatTypes.Add("Wysyłka");
+            }
+            else
+            {
+                StatTypes.Add("Prażenie");
+                StatTypes.Add("Mielenie");
+            }
             cmbStatsType.DataSource = StatTypes;
+            cmbStatsType.SelectedIndex = 0;
         }
 
         private void cmbLossDataSource_SelectedIndexChanged(object sender, EventArgs e)
