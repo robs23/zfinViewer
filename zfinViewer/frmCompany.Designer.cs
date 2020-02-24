@@ -461,19 +461,19 @@
             // sumaToolStripMenuItem
             // 
             this.sumaToolStripMenuItem.Name = "sumaToolStripMenuItem";
-            this.sumaToolStripMenuItem.Size = new System.Drawing.Size(113, 22);
+            this.sumaToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.sumaToolStripMenuItem.Text = "Suma";
             // 
             // liczbaToolStripMenuItem
             // 
             this.liczbaToolStripMenuItem.Name = "liczbaToolStripMenuItem";
-            this.liczbaToolStripMenuItem.Size = new System.Drawing.Size(113, 22);
+            this.liczbaToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.liczbaToolStripMenuItem.Text = "Liczba";
             // 
             // sredniaStripMenuItem1
             // 
             this.sredniaStripMenuItem1.Name = "sredniaStripMenuItem1";
-            this.sredniaStripMenuItem1.Size = new System.Drawing.Size(113, 22);
+            this.sredniaStripMenuItem1.Size = new System.Drawing.Size(180, 22);
             this.sredniaStripMenuItem1.Text = "Średnia";
             // 
             // frmCompany

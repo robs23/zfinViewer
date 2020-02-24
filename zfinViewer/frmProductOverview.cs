@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Text.RegularExpressions;
 using System.Globalization;
+using zfinViewer.Models;
 
 namespace zfinViewer
 {
@@ -40,6 +41,7 @@ namespace zfinViewer
 
         private void loadMe(object sender, EventArgs e)
         {
+            
             this.Location = new Point(this.Owner.Location.X + 20, this.Owner.Location.Y + 20);
             dgProd.ReadOnly = true;
             dgBom.ReadOnly = true;
@@ -375,7 +377,7 @@ namespace zfinViewer
                     switch (cmbStatType.Text)
                     {
                         case "Bez podsumowania":
-                            prodHistStr = @"SELECT CONVERT(date,sh.PlannedDate) as [Plan], po.LPlant  as [L-Plant],
+                            prodHistStr = @"SELECT sh.PlannedShipmentId as [ID], CONVERT(date,sh.PlannedDate) as [Plan], po.LPlant  as [L-Plant],
                             (SELECT TOP(1) CONVERT(date,t.transportDate) FROM tbDeliveryDetail dd LEFT JOIN tbCmr c ON c.detailId=dd.cmrDetailId LEFT JOIN tbTransport t ON t.transportId=c.transportId WHERE CHARINDEX(CONVERT(nvarchar,LEFT(sh.DeliveryNotes,10)),dd.deliveryNote)>0) as [Wysłano],
                             (SELECT TOP(1) sht.shipToString + ' ' + cd.companyName + ', ' + cd.companyCountry FROM tbDeliveryDetail dd LEFT JOIN tbShipTo sht ON sht.shipToId=dd.shipToId LEFT JOIN tbCompanyDetails cd ON cd.companyId=sht.companyId WHERE CHARINDEX(CONVERT(nvarchar,LEFT(sh.DeliveryNotes,10)),dd.deliveryNote)>0) as [Miejsce dostawy],
                             (SELECT TOP(1) CASE WHEN t.transportStatus = 2 THEN 'Wysłano' ELSE 'Oczekuje' END FROM tbDeliveryDetail dd LEFT JOIN tbCmr c ON c.detailId=dd.cmrDetailId LEFT JOIN tbTransport t ON t.transportId=c.transportId WHERE CHARINDEX(CONVERT(nvarchar,LEFT(sh.DeliveryNotes,10)),dd.deliveryNote)>0) as Status,
@@ -686,6 +688,7 @@ namespace zfinViewer
 
         private void tabChanged(object sender, EventArgs e)
         {
+            sumStatusStrip.Items.Clear();
             if (tabAll.SelectedTab.Text == "Gdzie używany" && dgWhereUsed.DataSource == null)
             {
                 whereUsedUpdate();
@@ -694,31 +697,38 @@ namespace zfinViewer
             {
                 bomUpdate();
             }
-            if (tabAll.SelectedTab.Text == "Historia" && dgProd.DataSource == null)
+            if (tabAll.SelectedTab.Text == "Historia")
             {
-                if (thisProduct.Type.ToLower() == "zfin")
+                //Initialize auto sum in status here
+                AutoSum autoSum = new AutoSum(this.sumStatusStrip, this.dgProd);
+                autoSum.Initilize();
+                if(dgProd.DataSource == null)
                 {
-                    var historyType = new[]
+                    if (thisProduct.Type.ToLower() == "zfin")
                     {
+                        var historyType = new[]
+                        {
                         "Produkcja","Wysyłki","Zapotrzebowanie","Planowane wysyłki","Podział produkcji","Zapasy","Przepływ"//,"Wszystko"
                     };
-                    cmbDataType.DataSource = historyType;
-                }
-                else
-                {
-                    var historyType = new[]
+                        cmbDataType.DataSource = historyType;
+                    }
+                    else
                     {
+                        var historyType = new[]
+                        {
                         "Produkcja"
                     };
-                    cmbDataType.DataSource = historyType;
-                }
+                        cmbDataType.DataSource = historyType;
+                    }
 
-                var prodHistorySum = new[]
-                {
+                    var prodHistorySum = new[]
+                    {
                     "Bez podsumowania", "Tydzień", "Miesiąc", "Rok"
                 };
-                cmbStatType.DataSource = prodHistorySum;
-                historyUpdate();
+                    cmbStatType.DataSource = prodHistorySum;
+                    historyUpdate();
+                }
+                
             }
             if (tabAll.SelectedTab.Text == "Straty" && cmbLossDataSource.DataSource == null)
             {
@@ -989,6 +999,149 @@ namespace zfinViewer
         private void btnUpdateStats_Click(object sender, EventArgs e)
         {
             UpdateStats();
+        }
+
+
+        private void dgProd_MouseClick(object sender, MouseEventArgs e)
+        {
+            if(e.Button== MouseButtons.Right)
+            {
+                if(cmbDataType.Text == "Planowane wysyłki")
+                {
+                    ContextMenu m = new ContextMenu();
+                    if (dgProd.SelectedRows.Count > 0)
+                    {
+                        //deselect
+                        for (int i = dgProd.SelectedRows.Count; i > 0; i--)
+                        {
+                            dgProd.SelectedRows[i-1].Selected = false; 
+                        }
+                    }
+                    m.MenuItems.Add(new MenuItem("Usuń pozycje", deleteHistoryItem));
+
+
+                    int currentMouseOverRow = dgProd.HitTest(e.X, e.Y).RowIndex;
+                    dgProd.Rows[currentMouseOverRow].Selected = true;
+
+                    m.Show(dgProd, new Point(e.X, e.Y));
+ 
+                }
+            }
+        }
+
+        private void deleteHistoryItem(object sender, EventArgs e)
+        {
+            if (dgProd.SelectedRows.Count > 0)
+            {
+
+                int id = Convert.ToInt32(dgProd.SelectedRows[0].Cells[0].Value.ToString());
+                if (cmbDataType.Text == "Planowane wysyłki")
+                {
+                    //delete planned shipments
+                    if(MessageBox.Show("Czy na pewno chcesz usunąć zaznaczoną wysyłkę?", "Potwierdź usunięcie", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                    {
+                        DeletePlannedShipment(id);
+                    }
+                }
+                else if (cmbDataType.Text == "Planowane wysyłki")
+                {
+                    //delete stock
+                }
+            }
+            
+        }
+
+        private void DeletePlannedShipment(int id)
+        {
+            DeletePoItems(id);
+            DeletePos(id);
+
+            string sql = $"DELETE FROM tbPlannedShipments WHERE PlannedShipmentId={id}";
+            SqlConnection conn = new SqlConnection(Variables.npdConnectionString);
+            SqlCommand sqlComand = new SqlCommand(sql, conn);
+
+            try
+            {
+                conn.Open();
+                sqlComand.ExecuteNonQuery();
+            } catch (Exception ex)
+            {
+                MessageBox.Show(String.Format("Nie udało się nawiązać połączenia z bazą danych", "Błąd połączenia z bazą danych"));
+            }
+            finally{
+                conn.Close();
+                MessageBox.Show("Usunięto zaznaczoną wysyłkę", "Powodzenie", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            
+        }
+
+        private void DeletePos(int shId)
+        {
+            string sql = $"DELETE FROM tbPo WHERE shipmentId={shId}";
+            SqlConnection conn = new SqlConnection(Variables.npdConnectionString);
+            SqlCommand sqlComand = new SqlCommand(sql, conn);
+            try
+            {
+                conn.Open();
+                SqlCommand dCommand = new SqlCommand(sql, conn);
+                dCommand.ExecuteNonQuery();
+            }catch(Exception ex)
+            {
+                MessageBox.Show(String.Format("Nie udało się nawiązać połączenia z bazą danych", "Błąd połączenia z bazą danych"));
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+        }
+
+        private void DeletePoItems(int shId)
+        {
+            string sql = @"SELECT po.PoId, poi.PoItemId
+                        FROM tbPlannedShipments ps
+                        LEFT JOIN tbPo po ON po.shipmentId = ps.PlannedShipmentId
+                        LEFT JOIN tbPoItem poi ON poi.PoId = po.PoId
+                        WHERE ps.PlannedShipmentId = @shipmentId";
+            SqlConnection conn = new SqlConnection(Variables.npdConnectionString);
+            SqlCommand sqlComand = new SqlCommand(sql, conn);
+            sqlComand.Parameters.Add("@shipmentId", SqlDbType.Int);
+            sqlComand.Parameters["@shipmentId"].Value = shId;
+
+            try
+            {
+                conn.Open();
+                string dSql = "DELETE FROM tbPoItem WHERE PoItemId IN ({0})";
+                string ids = "";
+
+                using (SqlDataReader reader = sqlComand.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        ids += reader.GetInt32(reader.GetOrdinal("PoItemId")) + ",";
+
+                    }
+                    if (!string.IsNullOrEmpty(ids))
+                    {
+                        ids = ids.Substring(0, ids.Length - 1); //Remove last ","
+                        dSql = string.Format(dSql, ids);
+                        
+                    }
+                }
+                if (!string.IsNullOrEmpty(ids))
+                {
+                    SqlCommand dCommand = new SqlCommand(dSql, conn);
+                    dCommand.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(String.Format("Nie udało się nawiązać połączenia z bazą danych", "Błąd połączenia z bazą danych"));
+            }
+            finally
+            {
+                conn.Close();
+            }
         }
     }
 
