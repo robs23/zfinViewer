@@ -10,6 +10,7 @@ namespace zfinViewer.Models
     public class AutoSum
     {
         ToolStripDropDownButton Button;
+        ToolStripLabel Label;
         StatusStrip Status;
         DataGridView Dgv;
 
@@ -22,13 +23,21 @@ namespace zfinViewer.Models
         public void Initilize()
         {
             Button = new ToolStripDropDownButton();
+            Label = new ToolStripLabel("Gotowy");
             Button.Text = "Podsumowanie";
             Button.DisplayStyle = ToolStripItemDisplayStyle.Text;
             Button.DropDownItems.Add("Suma");
             Button.DropDownItems.Add("Liczba");
             Button.DropDownItems.Add("Średnia");
             Button.DropDownItemClicked += summaryChanged;
+            Dgv.SelectionChanged += selectionChanged;
+            Status.Items.Add(Label);
             Status.Items.Add(Button);
+        }
+
+        private void selectionChanged(object sender, EventArgs e)
+        {
+            Update();
         }
 
         private void summaryChanged(object sender, ToolStripItemClickedEventArgs e)
@@ -46,6 +55,7 @@ namespace zfinViewer.Models
             {
                 Button.Text = "Średnia";
             }
+            Update();
         }
 
         public void Update()
@@ -68,23 +78,23 @@ namespace zfinViewer.Models
                     }
                     if (Result > 0)
                     {
-                        lblStatus.Text = Result.ToString();
+                        Label.Text = Result.ToString();
                     }
                 }
-                else if (ddSummary.Text == "Liczba")
+                else if (Button.Text == "Liczba")
                 {
-                    foreach (DataGridViewCell cell in dg.SelectedCells)
+                    foreach (DataGridViewCell cell in Dgv.SelectedCells)
                     {
                         Result++;
                     }
                     if (Result > 0)
                     {
-                        lblStatus.Text = Result.ToString();
+                        Label.Text = Result.ToString();
                     }
                 }
-                else if (ddSummary.Text == "Średnia")
+                else if (Button.Text == "Średnia")
                 {
-                    foreach (DataGridViewCell cell in dg.SelectedCells)
+                    foreach (DataGridViewCell cell in Dgv.SelectedCells)
                     {
                         if (Double.TryParse(cell.Value.ToString(), out n))
                         {
@@ -94,7 +104,7 @@ namespace zfinViewer.Models
                     }
                     if (Result > 0)
                     {
-                        lblStatus.Text = (Result / counter).ToString();
+                        Label.Text = (Result / counter).ToString();
                     }
                 }
             }

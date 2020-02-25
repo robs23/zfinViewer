@@ -151,7 +151,7 @@ namespace zfinViewer
 
         private void updateProdHistory(string sqlStr)
         {
-            DateTime startDate = DateTime.Now.AddDays(-7).StartOfWeek(DayOfWeek.Monday); //new DateTime(2019, 9, 22,22,0,0);
+            DateTime startDate = DateTime.Now.AddDays(-21).StartOfWeek(DayOfWeek.Monday); //new DateTime(2019, 9, 22,22,0,0);
             dgProd.DataSource = sqlStr;
             SqlConnection conn = new SqlConnection(Variables.npdConnectionString);
             SqlCommand sqlComand = new SqlCommand(sqlStr, conn);
@@ -389,7 +389,7 @@ namespace zfinViewer
                             LEFT JOIN tbPoItem poi ON poi.PoId=po.PoId
                             LEFT JOIN tbZfin z ON z.zfinId=poi.ProductId
                             LEFT JOIN tbUom u ON u.zfinId=z.zfinId
-                            WHERE z.zfinIndex=@index
+                            WHERE z.zfinIndex=@index AND sh.PlannedDate>=@startDate 
                             ORDER BY PlannedDate";
                             updateProdHistory(prodHistStr);
                             break;

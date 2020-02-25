@@ -274,7 +274,18 @@ namespace zfinViewer
                 ReleaseEntry release = null;
                 using (var mgr = new UpdateManager(Static.Secrets.SquirrelUpdatePath))
                 {
-                    release = await mgr.UpdateApp();
+                //SquirrelAwareApp.HandleEvents(
+                //onInitialInstall: v =>
+                //{
+                //    mgr.CreateShortcutForThisExe();
+                //    mgr.CreateRunAtWindowsStartupRegistry();
+                //},
+                //onAppUninstall: v =>
+                //{
+                //    mgr.RemoveShortcutForThisExe();
+                //    mgr.RemoveRunAtWindowsStartupRegistry();
+                //});
+                release = await mgr.UpdateApp();
                 }
                 if (release != null)
                 {
