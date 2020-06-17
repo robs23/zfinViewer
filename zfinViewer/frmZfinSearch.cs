@@ -11,6 +11,7 @@ using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Linq.Dynamic;
 using Squirrel;
+using System.IO;
 
 namespace zfinViewer
 {
@@ -271,21 +272,21 @@ namespace zfinViewer
         {
             this.Text = "ZfinViewer v." + System.Windows.Forms.Application.ProductVersion;
 #if (DEBUG == false)
-                ReleaseEntry release = null;
-                using (var mgr = new UpdateManager(Static.Secrets.SquirrelUpdatePath))
+            ReleaseEntry release = null;
+            string path = string.Empty;
+            if (Directory.Exists(Static.Secrets.SquirrelAbsoluteUpdatePath))
+            {
+                path = Static.Secrets.SquirrelAbsoluteUpdatePath;
+            }
+            else if (Directory.Exists(Static.Secrets.SquirrelUpdatePath))
+            {
+                path = Static.Secrets.SquirrelUpdatePath;
+            }
+            if (!string.IsNullOrWhiteSpace(path))
+            {
+                using (var mgr = new UpdateManager(path))
                 {
-                //SquirrelAwareApp.HandleEvents(
-                //onInitialInstall: v =>
-                //{
-                //    mgr.CreateShortcutForThisExe();
-                //    mgr.CreateRunAtWindowsStartupRegistry();
-                //},
-                //onAppUninstall: v =>
-                //{
-                //    mgr.RemoveShortcutForThisExe();
-                //    mgr.RemoveRunAtWindowsStartupRegistry();
-                //});
-                release = await mgr.UpdateApp();
+                    release = await mgr.UpdateApp();
                 }
                 if (release != null)
                 {
@@ -293,6 +294,8 @@ namespace zfinViewer
                     //force app restart
                     UpdateManager.RestartApp();
                 }
+            }
+            
 #endif
         }
     }
