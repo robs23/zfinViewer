@@ -47,13 +47,17 @@ namespace zfinViewer.Models
             {
                 foreach (DataGridViewCell cell in Dgv.SelectedCells)
                 {
-                    if (Double.TryParse(cell.Value.ToString(), out n))
+                    if (cell.Value != null)
                     {
-                        if (SumResult == null)
-                            SumResult = 0;
-                        SumResult += n;
+                        if (Double.TryParse(cell.Value.ToString(), out n))
+                        {
+                            if (SumResult == null)
+                                SumResult = 0;
+                            SumResult += n;
+                        }
+                        CountResult++;
                     }
-                    CountResult++;
+                    
                 }
 
                 if (CountResult < 2 )
