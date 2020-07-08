@@ -9,7 +9,6 @@ namespace zfinViewer.Models
 {
     public class AutoSum
     {
-        ToolStripDropDownButton Button;
         ToolStripLabel Label;
         StatusStrip Status;
         DataGridView Dgv;
@@ -22,17 +21,9 @@ namespace zfinViewer.Models
 
         public void Initilize()
         {
-            Button = new ToolStripDropDownButton();
             Label = new ToolStripLabel("Gotowy");
-            Button.Text = "Podsumowanie";
-            Button.DisplayStyle = ToolStripItemDisplayStyle.Text;
-            Button.DropDownItems.Add("Suma");
-            Button.DropDownItems.Add("Liczba");
-            Button.DropDownItems.Add("Średnia");
-            Button.DropDownItemClicked += summaryChanged;
             Dgv.SelectionChanged += selectionChanged;
             Status.Items.Add(Label);
-            Status.Items.Add(Button);
         }
 
         private void selectionChanged(object sender, EventArgs e)
@@ -42,70 +33,39 @@ namespace zfinViewer.Models
 
         private void summaryChanged(object sender, ToolStripItemClickedEventArgs e)
         {
-            if (e.ClickedItem.Text == "Suma")
-            {
-
-                Button.Text = "Suma";
-            }
-            else if (e.ClickedItem.Text == "Liczba")
-            {
-                Button.Text = "Liczba";
-            }
-            else
-            {
-                Button.Text = "Średnia";
-            }
             Update();
         }
 
         public void Update()
         {
-            int counter = 0;
-            double Result = 0;
+            double? SumResult = null;
+            double CountResult = 0;
             double n;
             bool greenlight = true;
 
             if (greenlight)
             {
-                if (Button.Text == "Suma")
+                foreach (DataGridViewCell cell in Dgv.SelectedCells)
                 {
-                    foreach (DataGridViewCell cell in Dgv.SelectedCells)
+                    if (Double.TryParse(cell.Value.ToString(), out n))
                     {
-                        if (Double.TryParse(cell.Value.ToString(), out n))
-                        {
-                            Result += n;
-                        }
+                        if (SumResult == null)
+                            SumResult = 0;
+                        SumResult += n;
                     }
-                    if (Result > 0)
-                    {
-                        Label.Text = Result.ToString();
-                    }
+                    CountResult++;
                 }
-                else if (Button.Text == "Liczba")
+
+                if (CountResult < 2 )
                 {
-                    foreach (DataGridViewCell cell in Dgv.SelectedCells)
-                    {
-                        Result++;
-                    }
-                    if (Result > 0)
-                    {
-                        Label.Text = Result.ToString();
-                    }
+                    Label.Text = "Gotowy";
+                }else if(SumResult == null)
+                {
+                    Label.Text = $"Liczba: {CountResult}";
                 }
-                else if (Button.Text == "Średnia")
+                else
                 {
-                    foreach (DataGridViewCell cell in Dgv.SelectedCells)
-                    {
-                        if (Double.TryParse(cell.Value.ToString(), out n))
-                        {
-                            Result += n;
-                            counter++;
-                        }
-                    }
-                    if (Result > 0)
-                    {
-                        Label.Text = (Result / counter).ToString();
-                    }
+                    Label.Text = $"Suma: {SumResult}    Liczba: {CountResult}   Średnia: {Math.Round((double)SumResult / CountResult, 2)}";
                 }
             }
         }
